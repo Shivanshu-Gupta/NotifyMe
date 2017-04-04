@@ -1,1 +1,1 @@
-include ':app', ':textrazor-1.0.10', ':lib'
+include ':app'
