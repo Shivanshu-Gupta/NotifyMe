@@ -1,6 +1,7 @@
 package com.softwareengg.project.notifyme.textprocess;
 
 import com.softwareengg.project.notifyme.Promo;
+import com.softwareengg.project.notifyme.PromoCategory;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -308,9 +309,39 @@ public class TextProcessing {
         return score;
     }
 
-    public Promo parsePromo(String PromoMsg) {
+    public Promo parsePromo(String[] promoMsg,String orgMsg) {
         Promo promo = new Promo();
+        String category = getCategory(promoMsg);
+        switch (category){
+            case "food" :
+                promo.setCategory(PromoCategory.FOOD);
+                break;
+            case "travel" :
+                promo.setCategory(PromoCategory.TRAVEL);
+                break;
+            case "clothing" :
+                promo.setCategory(PromoCategory.CLOTHING);
+                break;
+            case "accessories" :
+                promo.setCategory(PromoCategory.ACCESSORIES);
+                break;
+            case "entertainment" :
+                promo.setCategory(PromoCategory.ENTERTAINMENT);
+                break;
+            case "misc" :
+                promo.setCategory(PromoCategory.MISC);
+                break;
+        }
 
-        return null;
+
+        //String vendor;
+        //private Date receivedOn;
+        promo.setDiscountAmount(getDiscountAmount(promoMsg));
+        promo.setDiscountPercentage(getDiscountPercent(promoMsg));
+        promo.setCode(getCode(promoMsg,orgMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
+        promo.setExpiry(getValidity(promoMsg));
+        promo.setMaxUses(getMaxUses(promoMsg));
+        promo.setPromoMsg(orgMsg);
+        return promo;
     }
 }

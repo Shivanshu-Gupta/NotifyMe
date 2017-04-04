@@ -2,32 +2,92 @@ package com.softwareengg.project.notifyme;
 
 import java.sql.Date;
 
-/**
- * Created by shivanshu on 20/02/17.
- */
+;
 
 public class Promo {
     private static final String TAG = "NotifyMe";
 
-    private enum PromoCategory {
-        FOOD, CAB, TRAVEL, CLOTHING, ACCESSORIES, TALKTIME, DATA
-    };
+    public PromoCategory getCategory() {
+        return category;
+    }
 
-    private enum PromoType {
-        BUY_X_GET_Y, DISCOUNT_BY_FIXED, DISCOUNT_BY_PERCENT, DISCOUNT_TO_FIXED
-    };
+    public void setCategory(PromoCategory category) {
+        this.category = category;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public Date getReceivedOn() {
+        return receivedOn;
+    }
+
+    public void setReceivedOn(Date receivedOn) {
+        this.receivedOn = receivedOn;
+    }
+
+    public float getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(float discount) {
+        this.discountAmount = discount;
+    }
+
+    public float getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(float discount) {
+        this.discountPercentage = discount;
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        Code = code;
+    }
+
+    public Date getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(Date expiry) {
+        this.expiry = expiry;
+    }
+
+    public int getMaxUses() {
+        return maxUses;
+    }
+
+    public void setMaxUses(int maxUses) {
+        this.maxUses = maxUses;
+    }
+
+    public String getPromoMsg() {
+        return PromoMsg;
+    }
+
+    public void setPromoMsg(String promoMsg) {
+        PromoMsg = promoMsg;
+    }
 
     private PromoCategory category;
     private String vendor;
     private Date receivedOn;
-    private PromoType type;
 
-    private float discount;
+    private float discountAmount;
+    private float discountPercentage;
     private String Code;
     private Date expiry;
 
-    private String contact;
-    private String location;
     private int maxUses;
     private String PromoMsg;
 }
