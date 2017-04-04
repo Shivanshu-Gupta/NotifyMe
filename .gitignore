@@ -1,9 +1,13 @@
+*.iml
+.gradle
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
 /build
 /captures
+.externalNativeBuild
+
 *.dex
 
 # Java class files
@@ -41,7 +45,6 @@ Thumbs.db
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.ids
-.gitignore                                                                                                                                                         44,1           Bot
 
 .externalNativeBuild
 
