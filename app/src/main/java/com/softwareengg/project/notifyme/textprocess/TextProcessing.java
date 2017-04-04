@@ -332,10 +332,6 @@ public class TextProcessing {
                 promo.setCategory(PromoCategory.MISC);
                 break;
         }
-
-
-        //String vendor;
-        //private Date receivedOn;
         promo.setDiscountAmount(getDiscountAmount(promoMsg));
         promo.setDiscountPercentage(getDiscountPercent(promoMsg));
         promo.setCode(getCode(promoMsg,orgMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
