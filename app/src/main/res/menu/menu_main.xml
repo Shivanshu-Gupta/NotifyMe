@@ -2,9 +2,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.softwareengg.project.notifyme.MainActivity">
+
+    <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="100"
+        android:title="@string/action_filter"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_sort"
+        android:orderInCategory="100"
+        android:title="@string/action_sort"
+        android:icon="@drawable/ic_reorder"
+        app:showAsAction="ifRoom" />
+
+    <!--Better to show delete option on long press-->
+    <!--<item-->
+        <!--android:id="@+id/action_delete"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_delete"-->
+        <!--android:icon="@drawable/ic_delete"-->
+        <!--app:showAsAction="ifRoom" />-->
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
+        android:icon="@drawable/ic_settings"
         app:showAsAction="never" />
 </menu>
