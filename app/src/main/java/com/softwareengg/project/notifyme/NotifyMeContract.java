@@ -18,11 +18,10 @@ public final class NotifyMeContract {
         public static final String COLUMN_NAME_VENDOR ="vendor";
         public static final String COLUMN_NAME_RECEIVEDON ="receviedOn";
         public static final String COLUMN_NAME_TYPE ="type";
-        public static final String COLUMN_NAME_DISCOUNT = "discount";
+        public static final String COLUMN_NAME_DISCOUNT_AMOUNT = "discountAmount";
+        public static final String COLUMN_NAME_DISCOUNT_PERCENT = "discountPercent";
         public static final String COLUMN_NAME_CODE ="code";
         public static final String COLUMN_NAME_EXPIRY ="expiry";
-        public static final String COLUMN_NAME_CONTACT ="contact";
-        public static final String COLUMN_NAME_LOCATION ="location";
         public static final String COLUMN_NAME_MAX_USES ="maxUses";
         public static final String COLUMN_NAME_PROMO_MSG ="promoMsg";
     }
