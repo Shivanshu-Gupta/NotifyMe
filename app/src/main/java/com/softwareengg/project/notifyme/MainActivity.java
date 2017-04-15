@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity
         for(int i = 0; i < categories.length(); i++) {
             mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(1), categories.getString(i));
         }
-        mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(1), "ALL");
-        mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(1), "HOT");
     }
 
     private void setupTabIcons() {
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_star);
+        TypedArray categoryIcons = getResources().obtainTypedArray(R.array.category_icons);
+        for(int i = 0; i < mTabLayout.getTabCount(); i++) {
+            mTabLayout.getTabAt(i).setIcon(categoryIcons.getDrawable(i));
+        }
     }
 
     @Override
