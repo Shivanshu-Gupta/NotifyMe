@@ -9,9 +9,9 @@ import android.util.Log;
 /**
  * Created by Shivanshu Gupta on 19-Sep-15.
  */
-public class DatabaseHelper extends SQLiteOpenHelper{
+public class PromoDatabaseHelper extends SQLiteOpenHelper{
     private static final String TAG = "NotifyMe";
-    private static DatabaseHelper db;
+    private static PromoDatabaseHelper db;
     public static final String DATABASE_NAME="notifyme.db";
     public static String DATABASE_PATH = null;
     private static final int SCHEMA=1;
@@ -28,23 +28,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     static final String PROMO_MSG ="promoMsg";
     static final String PROMOS_TABLE ="Promos";
 
-    private DatabaseHelper(Context context) {
+    private PromoDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
         DATABASE_PATH = context.getDatabasePath(DATABASE_NAME).getPath();
     }
 
-    public static synchronized DatabaseHelper getInstance(Context context) {
+    public static synchronized PromoDatabaseHelper getInstance(Context context) {
         if(db ==null) {
-            db = new DatabaseHelper(context.getApplicationContext());
+            db = new PromoDatabaseHelper(context.getApplicationContext());
         }
         return db;
     }
 
-    public static synchronized DatabaseHelper getInstanceFresh(Context context) {
+    public static synchronized PromoDatabaseHelper getInstanceFresh(Context context) {
         db.close();
-        db = new DatabaseHelper(context.getApplicationContext());
+        db = new PromoDatabaseHelper(context.getApplicationContext());
         Cursor cur = db.getReadableDatabase().rawQuery("SELECT  * FROM " + PROMOS_TABLE, null);
-        Log.v(TAG, "DatabaseHelper : File Count: " + cur.getCount());
+        Log.v(TAG, "PromoDatabaseHelper : File Count: " + cur.getCount());
         return db;
     }
 
