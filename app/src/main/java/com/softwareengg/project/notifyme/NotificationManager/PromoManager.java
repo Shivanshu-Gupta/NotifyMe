@@ -58,18 +58,19 @@ public class PromoManager extends IntentService{
         dbHelper = PromoDatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.insert(PromoEntry.TABLE_NAME,null,values);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        //mBuilder.setSmallIcon(getResources().getDrawable(R.drawable.noti) R.drawable.notification_icon);
-        builder.setContentTitle("Notification Alert, Click Me!");
-        builder.setContentText("Hi, This is Android Notification Detail!");
-//        Intent notificationIntent = new Intent(this, MainActivity.class);
-//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-//                PendingIntent.FLAG_UPDATE_CURRENT);
-//        builder.setContentIntent(contentIntent);
 
-        // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
+        // add shared preferences to set threshold: currently 100
+
+        if(promo.getScore()>=100){
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            //builder.setSmallIcon(getResources().getDrawable(R.drawable.noti) R.drawable.notification_icon);
+            builder.setContentTitle("Notification Alert, Click Me!");
+            builder.setContentText("Hi, This is Android Notification Detail!");
+            // Add as notification
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(0, builder.build());
+        }
+
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

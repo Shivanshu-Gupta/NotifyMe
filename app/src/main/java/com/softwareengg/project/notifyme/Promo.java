@@ -7,6 +7,9 @@ import java.sql.Date;
 public class Promo {
     private static final String TAG = "NotifyMe";
 
+    public Promo() {
+    }
+
     public String getCategory() {
         return category;
     }
@@ -87,7 +90,16 @@ public class Promo {
     private float discountPercentage;
     private String Code;
     private Date expiry;
+    private float score;
 
     private int maxUses;
     private String PromoMsg;
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
 }

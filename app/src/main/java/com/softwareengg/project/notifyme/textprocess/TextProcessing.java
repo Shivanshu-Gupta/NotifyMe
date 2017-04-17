@@ -316,6 +316,7 @@ public class TextProcessing {
         promo.setExpiry(getValidity(promoMsg));
         promo.setMaxUses(getMaxUses(promoMsg));
         promo.setPromoMsg(originalMsg);
+        promo.setScore(getScore(promoMsg,1,1,1,1));
         return promo;
     }
 }
