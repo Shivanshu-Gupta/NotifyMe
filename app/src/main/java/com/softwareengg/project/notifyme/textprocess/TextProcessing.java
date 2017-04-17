@@ -1,7 +1,6 @@
 package com.softwareengg.project.notifyme.textprocess;
 
 import com.softwareengg.project.notifyme.Promo;
-import com.softwareengg.project.notifyme.PromoCategory;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -158,7 +157,7 @@ public class TextProcessing {
 
     public static Date getValidity(String[] msg){
         Date answer;
-        SimpleDateFormat df = new SimpleDateFormat("dd-M-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         for(int i=msg.length-1;i>0;i--)
         {
             if(msg[i].contains("today") || msg[i].contains("midnight"))
@@ -177,9 +176,9 @@ public class TextProcessing {
             {
                 String temp = "";
                 if(msg[i-1].length() > 2)
-                    temp = temp + msg[i-1].substring(0, msg[i-1].length()-2)+"-";
+                    temp = temp + msg[i-1].substring(0, msg[i-1].length()-2)+"/";
                 else
-                    temp = temp+msg[i-1]+"-";
+                    temp = temp+msg[i-1]+"/";
                 if(msg[i].equals("jan") || msg[i].equals("january"))
                     temp = temp+"01";
                 else if(msg[i].equals("feb") || msg[i].equals("february"))
@@ -204,7 +203,7 @@ public class TextProcessing {
                     temp = temp+"11";
                 else if(msg[i].equals("dec") || msg[i].equals("december"))
                     temp = temp+"12";
-                temp = temp + "-"+Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+                temp = temp + "/"+Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
                 Calendar cal = Calendar.getInstance();
                 java.util.Date utilDate;
@@ -220,7 +219,6 @@ public class TextProcessing {
                 } catch (ParseException ex) {
                     Logger.getLogger(TextProcessing.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         }
         return null;
@@ -309,35 +307,15 @@ public class TextProcessing {
         return score;
     }
 
-    public Promo parsePromo(String[] promoMsg,String orgMsg) {
+    public static Promo parsePromo(String[] promoMsg,String originalMsg) {
         Promo promo = new Promo();
-        String category = getCategory(promoMsg);
-        switch (category){
-            case "food" :
-                promo.setCategory(PromoCategory.FOOD);
-                break;
-            case "travel" :
-                promo.setCategory(PromoCategory.TRAVEL);
-                break;
-            case "clothing" :
-                promo.setCategory(PromoCategory.CLOTHING);
-                break;
-            case "accessories" :
-                promo.setCategory(PromoCategory.ACCESSORIES);
-                break;
-            case "entertainment" :
-                promo.setCategory(PromoCategory.ENTERTAINMENT);
-                break;
-            case "misc" :
-                promo.setCategory(PromoCategory.MISC);
-                break;
-        }
+        promo.setCategory(getCategory(promoMsg));
         promo.setDiscountAmount(getDiscountAmount(promoMsg));
         promo.setDiscountPercentage(getDiscountPercent(promoMsg));
-        promo.setCode(getCode(promoMsg,orgMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
+        promo.setCode(getCode(promoMsg,originalMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
         promo.setExpiry(getValidity(promoMsg));
         promo.setMaxUses(getMaxUses(promoMsg));
-        promo.setPromoMsg(orgMsg);
+        promo.setPromoMsg(originalMsg);
         return promo;
     }
 }

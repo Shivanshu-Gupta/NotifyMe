@@ -7,11 +7,11 @@ import java.sql.Date;
 public class Promo {
     private static final String TAG = "NotifyMe";
 
-    public PromoCategory getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(PromoCategory category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -79,7 +79,7 @@ public class Promo {
         PromoMsg = promoMsg;
     }
 
-    private PromoCategory category;
+    private String category;
     private String vendor;
     private Date receivedOn;
 
