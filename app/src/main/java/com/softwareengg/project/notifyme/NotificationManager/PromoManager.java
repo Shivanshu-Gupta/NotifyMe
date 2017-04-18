@@ -23,6 +23,9 @@ import java.util.Date;
  */
 
 public class PromoManager extends IntentService{
+
+    public final int SCORE_THRESHOLD = 100;
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -43,25 +46,23 @@ public class PromoManager extends IntentService{
         String lowerPromoText = promoText.toLowerCase();
         String[] lowPromoTextSplit = lowerPromoText.split(" +");
         Promo promo = TextProcessing.parsePromo(lowPromoTextSplit,promoText);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         ContentValues values = new ContentValues();
         values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
         values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
         values.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
         values.put(PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT,promo.getDiscountPercentage());
-        values.put(PromoEntry.COLUMN_NAME_EXPIRY, df.format(promo.getExpiry()));
+        values.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
         values.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
         values.put(PromoEntry.COLUMN_NAME_PROMO_MSG, promo.getPromoMsg());
         values.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
-        values.put(PromoEntry.COLUMN_NAME_RECEIVEDON,df.format(new Date()));
+        values.put(PromoEntry.COLUMN_NAME_RECEIPT, sdf.format(new Date()));
 
         dbHelper = PromoDatabaseHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.insert(PromoEntry.TABLE_NAME,null,values);
 
-        // add shared preferences to set threshold: currently 100
-
-        if(promo.getScore()>=100){
+        if(promo.getScore()>=SCORE_THRESHOLD){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
             //builder.setSmallIcon(getResources().getDrawable(R.drawable.noti) R.drawable.notification_icon);
             builder.setContentTitle("Notification Alert, Click Me!");
