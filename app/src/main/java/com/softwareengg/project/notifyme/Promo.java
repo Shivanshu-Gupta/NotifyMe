@@ -2,13 +2,19 @@ package com.softwareengg.project.notifyme;
 
 import java.sql.Date;
 
-;
-
 public class Promo {
     private static final String TAG = "NotifyMe";
-
-    public Promo() {
-    }
+    
+    private String category;
+    private String vendor;
+    private String Code;
+    private double discountAmount;
+    private double discountPercentage;
+    private int maxUses;
+    private double score;
+    private Date receipt;
+    private Date expiry;
+    private String PromoMsg;
 
     public String getCategory() {
         return category;
@@ -26,27 +32,27 @@ public class Promo {
         this.vendor = vendor;
     }
 
-    public Date getReceivedOn() {
-        return receivedOn;
+    public Date getReceipt() {
+        return receipt;
     }
 
-    public void setReceivedOn(Date receivedOn) {
-        this.receivedOn = receivedOn;
+    public void setReceipt(Date receipt) {
+        this.receipt = receipt;
     }
 
-    public float getDiscountAmount() {
+    public double getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(float discount) {
+    public void setDiscountAmount(double discount) {
         this.discountAmount = discount;
     }
 
-    public float getDiscountPercentage() {
+    public double getDiscountPercentage() {
         return discountPercentage;
     }
 
-    public void setDiscountPercentage(float discount) {
+    public void setDiscountPercentage(double discount) {
         this.discountPercentage = discount;
     }
 
@@ -74,32 +80,19 @@ public class Promo {
         this.maxUses = maxUses;
     }
 
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+    
     public String getPromoMsg() {
         return PromoMsg;
     }
 
     public void setPromoMsg(String promoMsg) {
         PromoMsg = promoMsg;
-    }
-
-    private String category;
-    private String vendor;
-    private Date receivedOn;
-
-    private float discountAmount;
-    private float discountPercentage;
-    private String Code;
-    private Date expiry;
-    private float score;
-
-    private int maxUses;
-    private String PromoMsg;
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
     }
 }

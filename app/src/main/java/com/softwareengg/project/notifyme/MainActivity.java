@@ -72,7 +72,10 @@ public class MainActivity extends AppCompatActivity
     private void setupTabs() {
         TypedArray categories = getResources().obtainTypedArray(R.array.categories);
         for(int i = 0; i < categories.length(); i++) {
-            mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(1), categories.getString(i));
+            String category = categories.getString(i);
+            Filter filter = new Filter();
+            filter.setCategory(category);
+            mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(filter), category);
         }
     }
 
@@ -161,8 +164,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        //TODO
+    public void onPromoSelected(Promo promo) {
+        //TODO: Show all details of the promo in a card.
     }
 
     private class DepthPageTransformer implements ViewPager.PageTransformer {

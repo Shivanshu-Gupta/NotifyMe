@@ -6,62 +6,41 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
+
 /**
  * Created by Shivanshu Gupta on 19-Sep-15.
  */
 public class PromoDatabaseHelper extends SQLiteOpenHelper{
     private static final String TAG = "NotifyMe";
     private static PromoDatabaseHelper db;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME="notifyme.db";
-    public static String DATABASE_PATH = null;
-    private static final int SCHEMA=1;
-    static final String CATEGORY ="category";
-    static final String VENDOR ="vendor";
-    static final String RECEIVEDON ="receviedOn";
-    static final String TYPE ="type";
-    static final String DISCOUNT = "discount";
-    static final String CODE ="code";
-    static final String EXPIRY ="expiry";
-    static final String CONTACT ="contact";
-    static final String LOCATION ="location";
-    static final String MAX_USES ="maxUses";
-    static final String PROMO_MSG ="promoMsg";
-    static final String PROMOS_TABLE ="Promos";
-
     private PromoDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, SCHEMA);
-        DATABASE_PATH = context.getDatabasePath(DATABASE_NAME).getPath();
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     public static synchronized PromoDatabaseHelper getInstance(Context context) {
-        if(db ==null) {
+        if(db == null) {
             db = new PromoDatabaseHelper(context.getApplicationContext());
         }
         return db;
     }
 
-    public static synchronized PromoDatabaseHelper getInstanceFresh(Context context) {
-        db.close();
-        db = new PromoDatabaseHelper(context.getApplicationContext());
-        Cursor cur = db.getReadableDatabase().rawQuery("SELECT  * FROM " + PROMOS_TABLE, null);
-        Log.v(TAG, "PromoDatabaseHelper : File Count: " + cur.getCount());
-        return db;
-    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + PROMOS_TABLE + " (" +
-                CATEGORY + "TEXT NOT NULL, " +
-                VENDOR + "TEXT NOT NULL, " +
-                RECEIVEDON + "DATETIME NOT NULL, " +
-                TYPE + "INT NOT NULL, " +
-                DISCOUNT + "TEXT NOT NULL, " +
-                CODE + "TEXT NOT NULL, " +
-                EXPIRY + "DATETIME NOT NULL, " +
-                CONTACT + "TEXT NOT NULL, " +
-                LOCATION + "TEXT NOT NULL, " +
-                MAX_USES + "INT NOT NULL, " +
-                PROMO_MSG + "TEXT NOT NULL)"
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + PromoEntry.TABLE_NAME + " (" +
+                PromoEntry._ID + " INTEGER PRIMARY KEY," +
+                PromoEntry.COLUMN_NAME_CATEGORY + " TEXT," +
+                PromoEntry.COLUMN_NAME_VENDOR + " TEXT," +
+                PromoEntry.COLUMN_NAME_RECEIPT + " DATETIME NOT NULL," +
+                PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT + " TEXT," +
+                PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT + " TEXT," +
+                PromoEntry.COLUMN_NAME_CODE + " TEXT," +
+                PromoEntry.COLUMN_NAME_EXPIRY + " DATETIME," +
+                PromoEntry.COLUMN_NAME_MAX_USES + " INT," +
+                PromoEntry.COLUMN_NAME_SCORE + "DECIMAL NOT NULL" +
+                PromoEntry.COLUMN_NAME_PROMO_MSG + " TEXT NOT NULL)"
         );
 //        db.execSQL("CREATE TABLE fileSizes (cloudFileName TEXT, size REAL, cloudList TEXT)");
 //        ContentValues cv=new ContentValues();
