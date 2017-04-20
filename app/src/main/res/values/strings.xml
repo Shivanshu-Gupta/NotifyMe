@@ -43,5 +43,41 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="main_sample">Sample Circle menu</string>
+    <string name="main_no_rotation">No rotation</string>
+    <string name="main_attributes">XML attributes</string>
+    <string name="main_dynamic_attributes">Dynamic attributes</string>
+    <string name="main_any_view">Any view</string>
+    <string name="main_dynamic_children">Dynamic children</string>
+
+    <!-- Toasts -->
+    <string name="start_app">Starting application: %s</string>
+    <string name="center_click">Center has been clicked</string>
+
+    <!-- Menu names -->
+    <string name="business_card">Business Card</string>
+    <string name="calendar">Calendar</string>
+    <string name="cloud">Cloud</string>
+    <string name="facebook">Facebook</string>
+    <string name="key">Key</string>
+    <string name="mail">Mail</string>
+    <string name="profile">Profile</string>
+    <string name="tag">Tag</string>
+    <string name="voice_search">Voice Search</string>
+    <!-- Buttons -->
+    <string name="button_add">Add child</string>
+    <string name="button_remove">Remove child</string>
+    <!-- Menu items -->
+    <string name="speed">speed</string>
+    <string name="radius">radius</string>
+    <string name="is_rotating">isRotating</string>
+    <string name="first_child_position">firstChildPosition</string>
+    <!-- Dialog -->
+    <string name="dialog_speed">Set speed attribute</string>
+    <string name="dialog_speed_value">speed: %d</string>
+    <string name="dialog_radius">Set radius attribute</string>
+    <string name="dialog_radius_value">radius: %ddp</string>
+    <string name="dialog_is_rotating">Set isRotating attribute</string>
+    <string name="dialog_first_child_position">Set the firstChildPosition attribute</string>
 
 </resources>
