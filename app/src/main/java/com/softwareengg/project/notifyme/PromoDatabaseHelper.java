@@ -1,10 +1,8 @@
 package com.softwareengg.project.notifyme;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
 
@@ -42,6 +40,7 @@ public class PromoDatabaseHelper extends SQLiteOpenHelper{
                 PromoEntry.COLUMN_NAME_SCORE + "DECIMAL NOT NULL" +
                 PromoEntry.COLUMN_NAME_PROMO_MSG + " TEXT NOT NULL)"
         );
+
 //        db.execSQL("CREATE TABLE fileSizes (cloudFileName TEXT, size REAL, cloudList TEXT)");
 //        ContentValues cv=new ContentValues();
 //

@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment;
-import com.softwareengg.project.notifyme.PromoListFragment.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;

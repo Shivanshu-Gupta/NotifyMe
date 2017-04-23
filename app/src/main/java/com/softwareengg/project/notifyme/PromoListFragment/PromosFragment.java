@@ -1,5 +1,6 @@
 package com.softwareengg.project.notifyme.PromoListFragment;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,13 +18,13 @@ import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
 import com.softwareengg.project.notifyme.Promo;
 import com.softwareengg.project.notifyme.PromoDatabaseHelper;
 import com.softwareengg.project.notifyme.R;
+import com.softwareengg.project.notifyme.textprocess.TextProcessing;
 
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A fragment representing a list of Items.
@@ -60,11 +61,11 @@ public class PromosFragment extends Fragment {
     public static PromosFragment newInstance(Filter filter) {
         PromosFragment fragment = new PromosFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_CATEGORY, filter.getCategory());
-        args.putStringArrayList(ARG_VENDORS, filter.getVendors());
+        if(filter.getCategory() != null) args.putString(ARG_CATEGORY, filter.getCategory());
+        if(filter.getVendors() != null) args.putStringArrayList(ARG_VENDORS, filter.getVendors());
         DateFormat df = DateFormat.getDateInstance();
-        args.putString(ARG_RECEIPT, df.format(filter.getReceipt()));
-        args.putString(ARG_EXPIRY, df.format(filter.getExpiry()));
+        if(filter.getReceipt() != null) args.putString(ARG_RECEIPT, df.format(filter.getReceipt()));
+        if(filter.getExpiry() != null) args.putString(ARG_EXPIRY, df.format(filter.getExpiry()));
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,9 +87,39 @@ public class PromosFragment extends Fragment {
         mDbHelper = PromoDatabaseHelper.getInstance(getContext());
         readPromos();
     }
+    private void addDummies(String dummypromo){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        Cursor mCursor = db.rawQuery("SELECT * FROM " + PromoEntry.TABLE_NAME, null);
+        if(mCursor.getCount()==0){
+            String promoText = dummypromo;
+            promoText = promoText.replaceAll("[.,!\n]", " ");
+            String lowerPromoText = promoText.toLowerCase();
+            String[] lowPromoTextSplit = lowerPromoText.split(" +");
+            Promo promo = TextProcessing.parsePromo(lowPromoTextSplit,promoText);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+            ContentValues values = new ContentValues();
+            values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
+            values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
+            values.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
+            values.put(PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT,promo.getDiscountPercentage());
+            values.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
+            values.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
+            values.put(PromoEntry.COLUMN_NAME_PROMO_MSG, promo.getPromoMsg());
+            values.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
+            values.put(PromoEntry.COLUMN_NAME_RECEIPT, sdf.format(new java.util.Date()));
+            db.insert(PromoEntry.TABLE_NAME,null,values);
+        }
+    }
 
     private void readPromos() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        //TODO: check if table is empty, insert dummies if empty
+        addDummies("Dear Rider, POOL is at flat Rs49 in NCR only till tomorrow 9 Feb! Valid on trips within Gurgaon, Delhi, Noida-Ghaziabad & Faridabad, upto 8km. t.uber.com/49ncr");
+        addDummies("Delicious foodpanda offer - 40% off on your first order. Use code NEWPANDA. Pay via wallets & 15% cash back too. Order Now: https://chk.bz/9k8pe69wzb");
+        addDummies("Dear Rider, use code DELWEEK & get Rs. 50 off 2 rides on uberGO or uberX. Valid only for you till midnight of Wed. 25 Jan, in Delhi NCR. Uber on!");
+        addDummies("Don't miss this! Use code JAN50 before 24 Jan & get Rs.50 cashback on Rs.50 transaction for deepanker27mishra@gmail.com. T&C Apply: http://frch.in/kk");
+        addDummies("Dominos Super Value Offer \\\"Only For You\\\";Buy 1 Medium/Large Pizza &Get 30% OFF.WalkIn/Order@ 68886888/ goo.gl/CQThqp Cpn: CRMF182F4EC80 Valid till 08 Jan T&C");
 
         // which columns to fetch
         String[] projection = null;     // read all columns
