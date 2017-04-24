@@ -1,6 +1,5 @@
 package com.softwareengg.project.notifyme.PromoListFragment;
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.softwareengg.project.notifyme.Filter;
 import com.softwareengg.project.notifyme.Promo;
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment.OnListFragmentInteractionListener;
 import com.softwareengg.project.notifyme.PromoListFragment.dummy.DummyContent.DummyItem;
 import com.softwareengg.project.notifyme.R;
 
-import java.sql.Date;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -44,7 +38,7 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mPromo = mPromos.get(position);
         holder.mTitleView.setText("HOT DEAL");
         holder.mVendorView.setText(mPromos.get(position).getVendor());

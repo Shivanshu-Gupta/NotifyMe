@@ -165,6 +165,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPromoSelected(Promo promo) {
         //TODO: Show all details of the promo in a card.
+        MessageDialog messageDialog  = MessageDialog.newInstance(promo);
+        messageDialog.show(getSupportFragmentManager(),"promo");
     }
 
     private class DepthPageTransformer implements ViewPager.PageTransformer {

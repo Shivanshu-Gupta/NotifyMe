@@ -281,7 +281,7 @@ public class TextProcessing {
         if(accessories > 1)
             return "accessories";
         if(entertainment > 1)
-            return "entertainment";
+            return "movies";
         return "misc";
     }
 
