@@ -22,7 +22,7 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sample);
+        setContentView(R.layout.landing);
 
         // Set listeners
         circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
@@ -46,28 +46,29 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
         } else {
             name = null;
         }
-
+        Intent mainIntent = new Intent(this, MainActivity.class);
         switch (view.getId()) {
-            case R.id.main_cab:
-                // Handle calendar selection
-                //TODO:fill these cases depending upon the category
-                break;
-            case R.id.main_stay:
-                // Handle cloud selection
-                break;
-            case R.id.main_menu:
-                // Handle key selection
-                break;
             case R.id.main_food:
-                // Handle mail selection
+                mainIntent.putExtra("Category", 1);
+                break;
+            case R.id.main_travel:
+                mainIntent.putExtra("Category", 2);
+                break;
+            case R.id.main_clothing:
+                mainIntent.putExtra("Category", 3);
+                break;
+            case R.id.main_accessories:
+                mainIntent.putExtra("Category", 4);
                 break;
             case R.id.main_movies:
-                // Handle profile selection
+                mainIntent.putExtra("Category", 5);
                 break;
             case R.id.main_misc:
-                // Handle tap selection
+                mainIntent.putExtra("Category", 6);
                 break;
         }
+        startActivity(mainIntent);
+        finish();
     }
 
     @Override
@@ -76,38 +77,38 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
         if (view instanceof CircleImageView) {
             name = ((CircleImageView) view).getName();
         }
-
+        Intent mainIntent = new Intent(this, MainActivity.class);
         switch (view.getId()) {
-            case R.id.main_cab:
-                // Handle calendar selection
-                //TODO:fill these cases depending upon the category
-                break;
-            case R.id.main_stay:
-                // Handle cloud selection
-                break;
-            case R.id.main_menu:
-                // Handle key selection
-                break;
             case R.id.main_food:
-                // Handle mail selection
+                mainIntent.putExtra("Category", 1);
+                break;
+            case R.id.main_travel:
+                mainIntent.putExtra("Category", 2);
+                break;
+            case R.id.main_clothing:
+                mainIntent.putExtra("Category", 3);
+                break;
+            case R.id.main_accessories:
+                mainIntent.putExtra("Category", 4);
                 break;
             case R.id.main_movies:
-                // Handle profile selection
+                mainIntent.putExtra("Category", 5);
                 break;
             case R.id.main_misc:
-                // Handle tap selection
+                mainIntent.putExtra("Category", 6);
                 break;
         }
-
-        Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
+        finish();
     }
 
 
     @Override
     public void onCenterClick() {
-        Toast.makeText(getApplicationContext(), R.string.center_click, Toast.LENGTH_SHORT).show();
         Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.putExtra("Category", 0);
+        startActivity(mainIntent);
+        finish();
     }
 
 

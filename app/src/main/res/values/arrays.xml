@@ -4,7 +4,8 @@
         <item>@drawable/ic_menu</item>
         <item>@drawable/ic_food</item>
         <item>@drawable/ic_cab</item>
-        <item>@drawable/ic_stay</item>
+        <item>@drawable/ic_clothing</item>
+        <item>@drawable/ic_accessories</item>
         <item>@drawable/ic_movies</item>
         <item>@drawable/ic_star</item>
     </integer-array>

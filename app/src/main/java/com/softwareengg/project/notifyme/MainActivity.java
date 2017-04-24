@@ -62,7 +62,10 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
-
+        Bundle b = getIntent().getExtras();
+        if(b != null) {
+            mViewPager.setCurrentItem(b.getInt("Category"));
+        }
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         setupTabIcons();
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         for(int i = 0; i < categories.length(); i++) {
             String category = categories.getString(i);
             Filter filter = new Filter();
-            filter.setCategory(category);
+            if(i > 0) filter.setCategory(category);
             mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(filter), category);
         }
     }
@@ -165,8 +168,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPromoSelected(Promo promo) {
         //TODO: Show all details of the promo in a card.
-        MessageDialog messageDialog  = MessageDialog.newInstance(promo);
-        messageDialog.show(getSupportFragmentManager(),"promo");
+        PromoDetailsDialog promoDetailsDialog = PromoDetailsDialog.newInstance(promo);
+        promoDetailsDialog.show(getSupportFragmentManager(),"promo");
     }
 
     private class DepthPageTransformer implements ViewPager.PageTransformer {

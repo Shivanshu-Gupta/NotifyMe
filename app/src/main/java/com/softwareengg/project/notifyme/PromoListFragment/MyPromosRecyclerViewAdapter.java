@@ -1,6 +1,7 @@
 package com.softwareengg.project.notifyme.PromoListFragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRecyclerViewAdapter.ViewHolder> {
+
+    private static final String TAG = "NotifyMe";
 
     private final ArrayList<Promo> mPromos;
     private final OnListFragmentInteractionListener mListener;
@@ -45,16 +48,7 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
         DateFormat df = DateFormat.getDateInstance();
         holder.mReceiptView.setText(df.format(mPromos.get(position).getReceipt()));
         holder.mVendorLogoView.setImageResource(R.drawable.ic_star);
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onPromoSelected(holder.mPromo);
-                }
-            }
-        });
+
     }
 
     @Override
@@ -74,6 +68,17 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        Log.v(TAG, "Promo clicked: " + mPromo.getPromoMsg());
+                        mListener.onPromoSelected(mPromo);
+                    }
+                }
+            });
             mTitleView = (TextView)view.findViewById(R.id.title); // promo title
             mVendorView = (TextView)view.findViewById(R.id.vendor); // vendor
             mReceiptView = (TextView)view.findViewById(R.id.receipt); // receipt

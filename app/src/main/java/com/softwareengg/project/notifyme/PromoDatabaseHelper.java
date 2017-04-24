@@ -28,16 +28,16 @@ public class PromoDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + PromoEntry.TABLE_NAME + " (" +
-                PromoEntry._ID + " INTEGER PRIMARY KEY," +
-                PromoEntry.COLUMN_NAME_CATEGORY + " TEXT," +
-                PromoEntry.COLUMN_NAME_VENDOR + " TEXT," +
-                PromoEntry.COLUMN_NAME_RECEIPT + " DATETIME NOT NULL," +
-                PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT + " TEXT," +
-                PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT + " TEXT," +
-                PromoEntry.COLUMN_NAME_CODE + " TEXT," +
-                PromoEntry.COLUMN_NAME_EXPIRY + " DATETIME," +
-                PromoEntry.COLUMN_NAME_MAX_USES + " INT," +
-                PromoEntry.COLUMN_NAME_SCORE + "DECIMAL NOT NULL" +
+                PromoEntry._ID + " INTEGER PRIMARY KEY, " +
+                PromoEntry.COLUMN_NAME_CATEGORY + " TEXT, " +
+                PromoEntry.COLUMN_NAME_VENDOR + " TEXT, " +
+                PromoEntry.COLUMN_NAME_CODE + " TEXT, " +
+                PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT + " TEXT, " +
+                PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT + " TEXT, " +
+                PromoEntry.COLUMN_NAME_MAX_USES + " INT, " +
+                PromoEntry.COLUMN_NAME_SCORE + " DECIMAL NOT NULL, " +
+                PromoEntry.COLUMN_NAME_RECEIPT + " STRING NOT NULL, " +
+                PromoEntry.COLUMN_NAME_EXPIRY + " STRING, " +
                 PromoEntry.COLUMN_NAME_PROMO_MSG + " TEXT NOT NULL)"
         );
 

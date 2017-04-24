@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +35,16 @@ import java.util.ArrayList;
  */
 public class PromosFragment extends Fragment {
 
+    private static final String TAG = "NotifyMe";
+
     private static final String ARG_CATEGORY = "category";
     private String mCategory;
     private static final String ARG_VENDORS = "vendors";
     private ArrayList<String> mVendors;
     private static final String ARG_RECEIPT = "receipt";
-    private Date mReceipt;
+    private String mReceipt;
     private static final String ARG_EXPIRY = "expiry";
-    private Date mExpiry;
+    private String mExpiry;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -77,49 +80,50 @@ public class PromosFragment extends Fragment {
         if (getArguments() != null) {
             mCategory = getArguments().getString(ARG_CATEGORY);
             mVendors = getArguments().getStringArrayList(ARG_VENDORS);
-            DateFormat df = DateFormat.getDateInstance();
-            try {
-                mReceipt = new Date(df.parse(getArguments().getString(ARG_RECEIPT)).getTime());
-                mExpiry = new Date(df.parse(getArguments().getString(ARG_EXPIRY)).getTime());
-            } catch (ParseException e) {}
+            mReceipt = getArguments().getString(ARG_RECEIPT);
+            mExpiry = getArguments().getString(ARG_EXPIRY);
         }
 
         mDbHelper = PromoDatabaseHelper.getInstance(getContext());
+        mPromos = new ArrayList<>();
         readPromos();
     }
+
     private void addDummies(String dummypromo){
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor mCursor = db.rawQuery("SELECT * FROM " + PromoEntry.TABLE_NAME, null);
-        if(mCursor.getCount()==0){
-            String promoText = dummypromo;
-            promoText = promoText.replaceAll("[.,!\n]", " ");
-            String lowerPromoText = promoText.toLowerCase();
-            String[] lowPromoTextSplit = lowerPromoText.split(" +");
-            Promo promo = TextProcessing.parsePromo(lowPromoTextSplit,promoText);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-            ContentValues values = new ContentValues();
-            values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
-            values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
-            values.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
-            values.put(PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT,promo.getDiscountPercentage());
-            values.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
-            values.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
-            values.put(PromoEntry.COLUMN_NAME_PROMO_MSG, promo.getPromoMsg());
-            values.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
-            values.put(PromoEntry.COLUMN_NAME_RECEIPT, sdf.format(new java.util.Date()));
-            db.insert(PromoEntry.TABLE_NAME,null,values);
-        }
+        String promoText = dummypromo;
+        promoText = promoText.replaceAll("[.,!\n]", " ");
+        String lowerPromoText = promoText.toLowerCase();
+        String[] lowPromoTextSplit = lowerPromoText.split(" +");
+        Promo promo = TextProcessing.parsePromo(lowPromoTextSplit,promoText);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        ContentValues cv = new ContentValues();
+        cv.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
+        cv.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
+        cv.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
+        cv.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
+        cv.put(PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT,promo.getDiscountPercentage());
+        cv.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
+        cv.put(PromoEntry.COLUMN_NAME_SCORE, promo.getScore());
+        cv.put(PromoEntry.COLUMN_NAME_RECEIPT, sdf.format(new java.util.Date()));
+        if(promo.getExpiry() != null) cv.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
+        cv.put(PromoEntry.COLUMN_NAME_PROMO_MSG, promo.getPromoMsg());
+        Log.v(TAG, cv.toString());
+        db.insert(PromoEntry.TABLE_NAME,null,cv);
     }
 
     private void readPromos() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        //TODO: check if table is empty, insert dummies if empty
-        addDummies("Dear Rider, POOL is at flat Rs49 in NCR only till tomorrow 9 Feb! Valid on trips within Gurgaon, Delhi, Noida-Ghaziabad & Faridabad, upto 8km. t.uber.com/49ncr");
-        addDummies("Delicious foodpanda offer - 40% off on your first order. Use code NEWPANDA. Pay via wallets & 15% cash back too. Order Now: https://chk.bz/9k8pe69wzb");
-        addDummies("Dear Rider, use code DELWEEK & get Rs. 50 off 2 rides on uberGO or uberX. Valid only for you till midnight of Wed. 25 Jan, in Delhi NCR. Uber on!");
-        addDummies("Don't miss this! Use code JAN50 before 24 Jan & get Rs.50 cashback on Rs.50 transaction for deepanker27mishra@gmail.com. T&C Apply: http://frch.in/kk");
-        addDummies("Dominos Super Value Offer \\\"Only For You\\\";Buy 1 Medium/Large Pizza &Get 30% OFF.WalkIn/Order@ 68886888/ goo.gl/CQThqp Cpn: CRMF182F4EC80 Valid till 08 Jan T&C");
+        //Check if table is empty, insert dummies if empty
+        Cursor mCursor = db.rawQuery("SELECT * FROM " + PromoEntry.TABLE_NAME, null);
+        if(mCursor.getCount() == 0) {
+            addDummies("Dear Rider, POOL is at flat Rs49 in NCR only till tomorrow 9 Feb! Valid on trips within Gurgaon, Delhi, Noida-Ghaziabad & Faridabad, upto 8km. t.uber.com/49ncr");
+            addDummies("Delicious foodpanda offer - 40% off on your first order. Use code NEWPANDA. Pay via wallets & 15% cash back too. Order Now: https://chk.bz/9k8pe69wzb");
+            addDummies("Dear Rider, use code DELWEEK & get Rs. 50 off 2 rides on uberGO or uberX. Valid only for you till midnight of Wed. 25 Jan, in Delhi NCR. Uber on!");
+            addDummies("Don't miss this! Use code JAN50 before 24 Jan & get Rs.50 cashback on Rs.50 transaction for deepanker27mishra@gmail.com. T&C Apply: http://frch.in/kk");
+            addDummies("Dominos Super Value Offer \\\"Only For You\\\";Buy 1 Medium/Large Pizza &Get 30% OFF.WalkIn/Order@ 68886888/ goo.gl/CQThqp Cpn: CRMF182F4EC80 Valid till 08 Jan T&C");
+        }
 
         // which columns to fetch
         String[] projection = null;     // read all columns
@@ -127,18 +131,22 @@ public class PromosFragment extends Fragment {
         // Filter results WHERE "vendor" IN (mVendors) AND receipt > 'mReceipt' AND expiry > 'mExpiry';
         ArrayList<String> selections = new ArrayList<>();
         ArrayList<String> selectionArgsList = new ArrayList<>();
+        if(mCategory != null) {
+            selections.add(PromoEntry.COLUMN_NAME_CATEGORY + "=?");
+            selectionArgsList.add(mCategory);
+        }
         if(mVendors != null && mVendors.size() > 0) {
             selections.add(PromoEntry.COLUMN_NAME_VENDOR + " IN (" + placeholders(mVendors.size()) + ") ");
             selectionArgsList.addAll(mVendors);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         if(mReceipt != null) {
-            selections.add(PromoEntry.COLUMN_NAME_RECEIPT  + "> ? ");
-            selectionArgsList.add(sdf.format(mReceipt));
+            selections.add(PromoEntry.COLUMN_NAME_RECEIPT  + ">?");
+            selectionArgsList.add(mReceipt);
         }
         if(mExpiry != null) {
-            selections.add(PromoEntry.COLUMN_NAME_EXPIRY + "> ? ");
-            selectionArgsList.add(sdf.format(mExpiry));
+            selections.add(PromoEntry.COLUMN_NAME_EXPIRY + ">?");
+            selectionArgsList.add(mExpiry);
         }
 
         String selection = TextUtils.join("AND ", selections);
@@ -170,11 +178,12 @@ public class PromosFragment extends Fragment {
             String receipt = cursor.getString(cursor.getColumnIndex(PromoEntry.COLUMN_NAME_RECEIPT));
             String expiry = cursor.getString(cursor.getColumnIndex(PromoEntry.COLUMN_NAME_EXPIRY));
             try {
-                promo.setReceipt((Date) sdf.parse(receipt));
-                promo.setExpiry((Date) sdf.parse(expiry));
+                if(receipt != null) promo.setReceipt(new Date(sdf.parse(receipt).getTime()));
+                if(expiry != null) promo.setExpiry(new Date(sdf.parse(expiry).getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            promo.setPromoMsg(cursor.getString(cursor.getColumnIndex(PromoEntry.COLUMN_NAME_PROMO_MSG)));
             mPromos.add(promo);
         }
 

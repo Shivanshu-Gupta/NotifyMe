@@ -24,6 +24,8 @@ import java.util.Date;
 
 public class PromoManager extends IntentService{
 
+    private static final String TAG = "NotifyMe";
+
     public final int SCORE_THRESHOLD = 100;
 
     /**
@@ -55,7 +57,12 @@ public class PromoManager extends IntentService{
         values.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
         values.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
         values.put(PromoEntry.COLUMN_NAME_PROMO_MSG, promo.getPromoMsg());
-        values.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
+        if(intent.getStringExtra("package") != null && !intent.getStringExtra("package").equals("")) {
+            values.put(PromoEntry.COLUMN_NAME_VENDOR, intent.getStringExtra("package"));
+        } else {
+            values.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
+        }
+        values.put(PromoEntry.COLUMN_NAME_SCORE,promo.getScore());
         values.put(PromoEntry.COLUMN_NAME_RECEIPT, sdf.format(new Date()));
 
         dbHelper = PromoDatabaseHelper.getInstance(getApplicationContext());

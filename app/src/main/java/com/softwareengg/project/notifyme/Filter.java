@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class Filter {
     String category;
     ArrayList<String> vendors;
-    Date receipt;
-    Date expiry;
+    String receipt;
+    String expiry;
 
     public void setCategory(String category) {
         this.category = category;
@@ -21,11 +21,11 @@ public class Filter {
         this.vendors = vendors;
     }
 
-    public void setReceipt(Date receipt) {
+    public void setReceipt(String receipt) {
         this.receipt = receipt;
     }
 
-    public void setExpiry(Date expiry) {
+    public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
 
@@ -37,11 +37,11 @@ public class Filter {
         return vendors;
     }
 
-    public Date getReceipt() {
+    public String getReceipt() {
         return receipt;
     }
 
-    public Date getExpiry() {
+    public String getExpiry() {
         return expiry;
     }
 }
