@@ -27,7 +27,7 @@
     <string name="action_delete">Delete</string>
     <string name="action_sort">Sort</string>
     <string name="action_filter">Filter</string>
-
+    <string name="notify">NotificationEnable</string>
     <string name="filter">Apply Filter</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>

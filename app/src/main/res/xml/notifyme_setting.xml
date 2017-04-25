@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="notifyMeSettings">
-
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notify"
+        android:title="Notification"
+        />
     <MultiSelectListPreference
     android:title="Vendors"
     android:summary="Select vendors of interest"
