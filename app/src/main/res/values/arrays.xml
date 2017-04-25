@@ -17,4 +17,23 @@
         <item>@string/main_any_view</item>
         <item>@string/main_dynamic_children</item>
     </string-array>
+    <string-array name="vendors">
+        <item>Paytm</item>
+        <item>Mobikwik</item>
+        <item>Zomato</item>
+        <item>Faasos</item>
+        <item>Uber</item>
+        <item>Ola</item>
+        <item>Myntra</item>
+    </string-array>
+    <string-array name="vendorsValues">
+        <item>Paytm</item>
+        <item>Mobikwik</item>
+        <item>Zomato</item>
+        <item>Faasos</item>
+        <item>Uber</item>
+        <item>Ola</item>
+        <item>Myntra</item>
+    </string-array>
+
 </resources>

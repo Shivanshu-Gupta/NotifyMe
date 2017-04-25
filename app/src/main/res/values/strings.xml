@@ -23,15 +23,6 @@
         <item>misc</item>
     </string-array>
 
-    <string-array name="vendors">
-        <item>Paytm</item>
-        <item>Mobikwik</item>
-        <item>Zomato</item>
-        <item>Faasos</item>
-        <item>Uber</item>
-        <item>Ola</item>
-        <item>Myntra</item>
-    </string-array>
 
     <string name="activity_title_about_us">About Us</string>
     <string name="action_delete">Delete</string>
@@ -40,6 +31,7 @@
 
     <string name="filter">Apply Filter</string>
     <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="notifyMeSettings">
+
+    <MultiSelectListPreference
+    android:title="Vendors"
+    android:summary="Select vendors of interest"
+    android:key="vendors"
+    android:entries="@array/vendors"
+    android:entryValues="@array/vendorsValues" />
+</PreferenceScreen>

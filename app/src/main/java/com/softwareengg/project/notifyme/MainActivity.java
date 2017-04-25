@@ -1,5 +1,6 @@
 package com.softwareengg.project.notifyme;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment;
+import com.softwareengg.project.notifyme.Settings.NotifyMeSettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +118,8 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                Intent settingsIntent = new Intent(this, NotifyMeSettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
 
             default:
