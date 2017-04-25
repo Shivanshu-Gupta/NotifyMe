@@ -1,4 +1,4 @@
-package com.softwareengg.project.notifyme;
+package com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations;
 
 import java.io.Serializable;
 import java.sql.Date;

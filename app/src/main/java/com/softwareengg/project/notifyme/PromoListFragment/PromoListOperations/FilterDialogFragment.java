@@ -1,4 +1,4 @@
-package com.softwareengg.project.notifyme;
+package com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import com.softwareengg.project.notifyme.R;
+
 import java.util.ArrayList;
 
 public class FilterDialogFragment extends DialogFragment {
 
-    private static final String ARG_FILTER = "com.softwareengg.project.notifyme.FilterDialogFragment.filter";
+    private static final String ARG_FILTER = "com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.FilterDialogFragment.filter";
     public Filter mFilter;
 
     ArrayList<String> mSelectedVendors;

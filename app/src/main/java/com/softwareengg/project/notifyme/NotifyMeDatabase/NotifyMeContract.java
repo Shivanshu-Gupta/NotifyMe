@@ -1,4 +1,4 @@
-package com.softwareengg.project.notifyme;
+package com.softwareengg.project.notifyme.NotifyMeDatabase;
 
 import android.provider.BaseColumns;
 

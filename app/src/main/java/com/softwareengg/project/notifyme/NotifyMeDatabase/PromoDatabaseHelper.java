@@ -1,10 +1,10 @@
-package com.softwareengg.project.notifyme;
+package com.softwareengg.project.notifyme.NotifyMeDatabase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
+import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract.PromoEntry;
 
 /**
  * Created by Shivanshu Gupta on 19-Sep-15.

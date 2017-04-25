@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -20,10 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.softwareengg.project.notifyme.PromoListFragment.PromoDetailsDialog;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Filter;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.FilterDialogFragment;
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment;
 import com.softwareengg.project.notifyme.Settings.NotifyMeSettingsActivity;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 

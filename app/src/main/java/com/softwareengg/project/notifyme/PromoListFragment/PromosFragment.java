@@ -14,15 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.softwareengg.project.notifyme.Filter;
-import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Filter;
+import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract.PromoEntry;
 import com.softwareengg.project.notifyme.Promo;
-import com.softwareengg.project.notifyme.PromoDatabaseHelper;
+import com.softwareengg.project.notifyme.NotifyMeDatabase.PromoDatabaseHelper;
 import com.softwareengg.project.notifyme.R;
 import com.softwareengg.project.notifyme.textprocess.TextProcessing;
 
 import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,14 +37,6 @@ public class PromosFragment extends Fragment {
     private static final String TAG = "NotifyMe";
     private static final String ARG_FILTER = "com.softwareengg.project.notifyme.PromoListFragment.PromosFragment.filter";
     public Filter mFilter;
-//    private static final String ARG_CATEGORY = "category";
-//    private String mCategory;
-//    private static final String ARG_VENDORS = "vendors";
-//    private ArrayList<String> mVendors;
-//    private static final String ARG_RECEIPT = "receipt";
-//    private String mReceipt;
-//    private static final String ARG_EXPIRY = "expiry";
-//    private String mExpiry;
 
     private RecyclerView mRecyclerView;
     private MyPromosRecyclerViewAdapter mAdapter;

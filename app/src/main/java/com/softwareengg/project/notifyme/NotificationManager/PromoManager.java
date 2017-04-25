@@ -8,13 +8,12 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.NotificationCompat;
 
-import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
+import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract.PromoEntry;
 import com.softwareengg.project.notifyme.Promo;
-import com.softwareengg.project.notifyme.PromoDatabaseHelper;
+import com.softwareengg.project.notifyme.NotifyMeDatabase.PromoDatabaseHelper;
 import com.softwareengg.project.notifyme.R;
 import com.softwareengg.project.notifyme.textprocess.TextProcessing;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

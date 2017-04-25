@@ -1,10 +1,12 @@
-package com.softwareengg.project.notifyme;
+package com.softwareengg.project.notifyme.PromoListFragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+
+import com.softwareengg.project.notifyme.Promo;
 
 import java.sql.Date;
 import java.text.DateFormat;
