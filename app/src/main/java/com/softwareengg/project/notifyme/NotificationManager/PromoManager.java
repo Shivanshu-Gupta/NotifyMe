@@ -11,6 +11,7 @@ import android.support.v7.app.NotificationCompat;
 import com.softwareengg.project.notifyme.NotifyMeContract.PromoEntry;
 import com.softwareengg.project.notifyme.Promo;
 import com.softwareengg.project.notifyme.PromoDatabaseHelper;
+import com.softwareengg.project.notifyme.R;
 import com.softwareengg.project.notifyme.textprocess.TextProcessing;
 
 import java.text.DateFormat;
@@ -43,11 +44,8 @@ public class PromoManager extends IntentService{
         //it is a service
         //store parsed promo in db:PROMOS_TABLE
         //through notification if >threshold
-        String promoText = intent.getStringExtra("text");
-        promoText = promoText.replaceAll("[.,!\n]", " ");
-        String lowerPromoText = promoText.toLowerCase();
-        String[] lowPromoTextSplit = lowerPromoText.split(" +");
-        Promo promo = TextProcessing.parsePromo(lowPromoTextSplit,promoText);
+        String promoMsg = intent.getStringExtra("text");
+        Promo promo = TextProcessing.parsePromo(promoMsg, getResources().getStringArray(R.array.vendors));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         ContentValues values = new ContentValues();
         values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());

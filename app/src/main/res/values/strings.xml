@@ -23,7 +23,6 @@
         <item>misc</item>
     </string-array>
 
-
     <string name="activity_title_about_us">About Us</string>
     <string name="action_delete">Delete</string>
     <string name="action_sort">Sort</string>

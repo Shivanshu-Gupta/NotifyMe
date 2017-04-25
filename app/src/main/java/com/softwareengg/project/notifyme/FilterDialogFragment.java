@@ -11,22 +11,50 @@ import java.util.ArrayList;
 
 public class FilterDialogFragment extends DialogFragment {
 
-    ArrayList<String> mSelectedVendors = new ArrayList();
+    private static final String ARG_FILTER = "com.softwareengg.project.notifyme.FilterDialogFragment.filter";
+    public Filter mFilter;
+
+    ArrayList<String> mSelectedVendors;
 
     // Use this instance of the interface to deliver action events
     FilterDialogListener mListener;
 
+    public static FilterDialogFragment newInstance(Filter filter) {
+        FilterDialogFragment fragment = new FilterDialogFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_FILTER, filter);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
+        if(getArguments() != null) {
+            mFilter = (Filter) getArguments().getSerializable(ARG_FILTER);
+            mSelectedVendors = mFilter.getVendors();
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] vendors = getResources().getStringArray(R.array.vendors);
+        final boolean[] checked = new boolean[vendors.length];
+        if(mSelectedVendors == null) {
+            mSelectedVendors = new ArrayList<String>();
+            for(int i = 0; i < vendors.length; i++) {
+                mSelectedVendors.add(vendors[i]);
+                checked[i] = true;
+            }
+        } else if(mSelectedVendors.size() > 0) {
+            for(int i = 0; i < vendors.length; i++) {
+                if(mSelectedVendors.contains(vendors[i])) {
+                    checked[i] = true;
+                }
+            }
+        }
 
         builder.setTitle("Filter Promos")
                 //.setMessage(R.string.dialog_fire_missiles)
                 // Specify the list array, the items to be selected by default (null for none),
                 // and the listener through which to receive callbacks when items are selected
-                .setMultiChoiceItems(vendors, null,
+                .setMultiChoiceItems(vendors, checked,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which,
@@ -43,7 +71,12 @@ public class FilterDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.filter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // TODO: Apply filters
-                        mListener.onApplyFilter(FilterDialogFragment.this, mSelectedVendors);
+                        Filter filter = new Filter();
+                        filter.setVendors(mSelectedVendors);
+                        if(mFilter != null) {
+                            filter.setCategory(mFilter.getCategory());
+                        }
+                        mListener.onApplyFilter(FilterDialogFragment.this, filter);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -70,6 +103,6 @@ public class FilterDialogFragment extends DialogFragment {
     * implement this interface in order to receive event callbacks.
             * Each method passes the DialogFragment in case the host needs to query it. */
     public interface FilterDialogListener {
-        public void onApplyFilter(DialogFragment dialog, ArrayList<String> selectedVendors);
+        public void onApplyFilter(DialogFragment dialog, Filter filter);
     }
 }

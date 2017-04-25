@@ -10,27 +10,27 @@ import android.widget.TextView;
 
 import com.softwareengg.project.notifyme.Promo;
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment.OnListFragmentInteractionListener;
-import com.softwareengg.project.notifyme.PromoListFragment.dummy.DummyContent.DummyItem;
 import com.softwareengg.project.notifyme.R;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "NotifyMe";
 
-    private final ArrayList<Promo> mPromos;
+    private ArrayList<Promo> mPromos;
     private final OnListFragmentInteractionListener mListener;
 
     public MyPromosRecyclerViewAdapter(ArrayList<Promo> promos, OnListFragmentInteractionListener listener) {
         mPromos = promos;
         mListener = listener;
+    }
+
+
+    public void updatePromos(ArrayList<Promo> promos) {
+        mPromos = promos;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -48,7 +48,6 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
         DateFormat df = DateFormat.getDateInstance();
         holder.mReceiptView.setText(df.format(mPromos.get(position).getReceipt()));
         holder.mVendorLogoView.setImageResource(R.drawable.ic_star);
-
     }
 
     @Override

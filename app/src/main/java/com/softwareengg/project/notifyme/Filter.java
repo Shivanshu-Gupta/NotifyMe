@@ -1,5 +1,6 @@
 package com.softwareengg.project.notifyme;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -7,11 +8,22 @@ import java.util.ArrayList;
  * Created by shivanshu on 15/04/17.
  */
 
-public class Filter {
+public class Filter implements Serializable {
     String category;
     ArrayList<String> vendors;
     String receipt;
     String expiry;
+
+    public Filter() {
+
+    }
+
+    public Filter(String category, ArrayList<String> vendors, String receipt, String expiry) {
+        this.category = category;
+        this.vendors = vendors;
+        this.receipt = receipt;
+        this.expiry = expiry;
+    }
 
     public void setCategory(String category) {
         this.category = category;

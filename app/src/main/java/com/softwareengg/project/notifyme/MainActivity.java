@@ -14,20 +14,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment;
 import com.softwareengg.project.notifyme.Settings.NotifyMeSettingsActivity;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements PromosFragment.OnListFragmentInteractionListener, FilterDialogFragment.FilterDialogListener {
     private static final String TAG = "NotifyMe";
-    public static int categoryCount = 6;
     /**
      * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -74,11 +76,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTabs() {
-        TypedArray categories = getResources().obtainTypedArray(R.array.categories);
-        for(int i = 0; i < categories.length(); i++) {
-            String category = categories.getString(i);
+        String[] categories = getResources().getStringArray(R.array.categories);
+        for(int i = 0; i < categories.length; i++) {
+            String category = categories[i];
             Filter filter = new Filter();
             if(i > 0) filter.setCategory(category);
+//            filter.setVendors(vendors);
+//            filter.setReceipt(receipt);
+//            filter.setExpiry(expiry);
             mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(filter), category);
         }
     }
@@ -104,8 +109,14 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_filter:
-                DialogFragment newFragment = new FilterDialogFragment();
-                newFragment.show(getSupportFragmentManager(), "filter");
+//                DialogFragment newFragment = new FilterDialogFragment();
+                Log.v(TAG, "Filter : current tab : " + mViewPager.getCurrentItem());
+                String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
+                PromosFragment promosFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+                if(promosFragment != null) {
+                    FilterDialogFragment newFragment = FilterDialogFragment.newInstance(promosFragment.mFilter);
+                    newFragment.show(getSupportFragmentManager(), "filter");
+                }
                 return true;
 
             case R.id.action_sort:
@@ -136,7 +147,7 @@ public class MainActivity extends AppCompatActivity
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<PromosFragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -144,7 +155,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public PromosFragment getItem(int position) {
             return mFragmentList.get(position);
         }
 
@@ -153,7 +164,7 @@ public class MainActivity extends AppCompatActivity
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(PromosFragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -164,16 +175,23 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onApplyFilter(DialogFragment dialog, ArrayList<String> selectedVendors) {
+    private static String makeFragmentName(int viewId, int position) {
+        return "android:switcher:" + viewId + ":" + position;
+    }
 
+
+    @Override
+    public void onApplyFilter(DialogFragment dialog, Filter filter) {
+        String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
+        PromosFragment viewPagerFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+        viewPagerFragment.updateFilter(filter);
     }
 
     @Override
     public void onPromoSelected(Promo promo) {
         //TODO: Show all details of the promo in a card.
         PromoDetailsDialog promoDetailsDialog = PromoDetailsDialog.newInstance(promo);
-        promoDetailsDialog.show(getSupportFragmentManager(),"promo");
+        promoDetailsDialog.show(getSupportFragmentManager(), "promo");
     }
 
     private class DepthPageTransformer implements ViewPager.PageTransformer {

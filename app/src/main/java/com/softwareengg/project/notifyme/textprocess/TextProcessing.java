@@ -307,16 +307,29 @@ public class TextProcessing {
         return score;
     }
 
-    public static Promo parsePromo(String[] promoMsg,String originalMsg) {
+    public static String getVendor(String[] promoMsgParts, String[] vendors) {
+        for(String part : promoMsgParts) {
+            for(String vendor : vendors) {
+                if(part.contains(vendor.toLowerCase())) {
+                    return vendor;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Promo parsePromo(String promoMsg, String[] vendors) {
         Promo promo = new Promo();
-        promo.setCategory(getCategory(promoMsg));
-        promo.setDiscountAmount(getDiscountAmount(promoMsg));
-        promo.setDiscountPercentage(getDiscountPercent(promoMsg));
-        promo.setCode(getCode(promoMsg,originalMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
-        promo.setExpiry(getValidity(promoMsg));
-        promo.setMaxUses(getMaxUses(promoMsg));
-        promo.setPromoMsg(originalMsg);
-        promo.setScore(getScore(promoMsg,1,1,1,1));
+        String[] promoMsgParts = promoMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +");
+        promo.setCategory(getCategory(promoMsgParts));
+        promo.setDiscountAmount(getDiscountAmount(promoMsgParts));
+        promo.setDiscountPercentage(getDiscountPercent(promoMsgParts));
+        promo.setCode(getCode(promoMsgParts,promoMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
+        promo.setExpiry(getValidity(promoMsgParts));
+        promo.setMaxUses(getMaxUses(promoMsgParts));
+        promo.setPromoMsg(promoMsg);
+        promo.setScore(getScore(promoMsgParts,1,1,1,1));
+        promo.setVendor(getVendor(promoMsgParts, vendors));
         return promo;
     }
 }
