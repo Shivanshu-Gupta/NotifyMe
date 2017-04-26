@@ -8,20 +8,25 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 
+import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoDetailsDialog;
-import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Filter;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.FilterDialogFragment;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Filter;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Sort;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.SortDialogFragment;
 import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment;
 import com.softwareengg.project.notifyme.Settings.NotifyMeSettingsActivity;
 
@@ -29,7 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements PromosFragment.OnListFragmentInteractionListener, FilterDialogFragment.FilterDialogListener {
+        implements PromosFragment.OnListFragmentInteractionListener,
+        FilterDialogFragment.FilterDialogListener,
+        SortDialogFragment.SortDialogListener {
     private static final String TAG = "NotifyMe";
     /**
      * The {@link PagerAdapter} that will provide
@@ -82,10 +89,8 @@ public class MainActivity extends AppCompatActivity
             String category = categories[i];
             Filter filter = new Filter();
             if(i > 0) filter.setCategory(category);
-//            filter.setVendors(vendors);
-//            filter.setReceipt(receipt);
-//            filter.setExpiry(expiry);
-            mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(filter), category);
+            Sort sort = new Sort(0, 0);
+            mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(filter, sort), category);
         }
     }
 
@@ -105,23 +110,34 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.v(TAG, "Filter : current tab : " + mViewPager.getCurrentItem());
+        String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
+        PromosFragment promosFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_filter:
-//                DialogFragment newFragment = new FilterDialogFragment();
-                Log.v(TAG, "Filter : current tab : " + mViewPager.getCurrentItem());
-                String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
-                PromosFragment promosFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+//                DialogFragment newFragment = new VendorFilterDialogFragment();
                 if(promosFragment != null) {
                     FilterDialogFragment newFragment = FilterDialogFragment.newInstance(promosFragment.mFilter);
-                    newFragment.show(getSupportFragmentManager(), "filter");
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    transaction.add(android.R.id.content, newFragment)
+                            .addToBackStack(null).commit();
                 }
                 return true;
 
             case R.id.action_sort:
                 // User chose the "Settings" item, show the app settings UI...
+                if(promosFragment != null) {
+                    SortDialogFragment newFragment = SortDialogFragment.newInstance(promosFragment.mSort);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    transaction.add(android.R.id.content, newFragment)
+                            .addToBackStack(null).commit();
+                }
                 return true;
 
 //            case R.id.action_delete:
@@ -183,14 +199,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onApplyFilter(DialogFragment dialog, Filter filter) {
+        Log.v(TAG, TextUtils.join(", ", filter.getVendors()));
         String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
         PromosFragment viewPagerFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
         viewPagerFragment.updateFilter(filter);
     }
 
+
+    @Override
+    public void onApplySort(DialogFragment dialog, Sort sort) {
+        Log.v(TAG, String.valueOf(sort.getCriteria()));
+        String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
+        PromosFragment viewPagerFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+        viewPagerFragment.updateSort(sort);
+    }
+
     @Override
     public void onPromoSelected(Promo promo) {
-        //TODO: Show all details of the promo in a card.
         PromoDetailsDialog promoDetailsDialog = PromoDetailsDialog.newInstance(promo);
         promoDetailsDialog.show(getSupportFragmentManager(), "promo");
     }

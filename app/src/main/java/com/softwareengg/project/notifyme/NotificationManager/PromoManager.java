@@ -45,7 +45,7 @@ public class PromoManager extends IntentService{
         //through notification if >threshold
         String promoMsg = intent.getStringExtra("text");
         Promo promo = TextProcessing.parsePromo(promoMsg, getResources().getStringArray(R.array.vendors));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_format));
         ContentValues values = new ContentValues();
         values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
         values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());

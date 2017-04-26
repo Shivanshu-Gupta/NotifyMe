@@ -315,7 +315,7 @@ public class TextProcessing {
                 }
             }
         }
-        return null;
+        return "Others";
     }
 
     public static Promo parsePromo(String promoMsg, String[] vendors) {

@@ -22,18 +22,36 @@
         <item>Mobikwik</item>
         <item>Zomato</item>
         <item>Faasos</item>
+        <item>Foodpanda</item>
+        <item>Dominos</item>
         <item>Uber</item>
         <item>Ola</item>
         <item>Myntra</item>
+        <item>Amazon</item>
+        <item>Others</item>
     </string-array>
     <string-array name="vendorsValues">
         <item>Paytm</item>
         <item>Mobikwik</item>
         <item>Zomato</item>
         <item>Faasos</item>
+        <item>Foodpanda</item>
+        <item>Dominos</item>
         <item>Uber</item>
         <item>Ola</item>
         <item>Myntra</item>
+        <item>Amazon</item>
+        <item>Others</item>
     </string-array>
 
+    <string-array name="sort_criteria">
+        <item>Score</item>
+        <item>Vendor</item>
+        <item>Date of Receipt</item>
+    </string-array>
+
+    <string-array name="sort_direction">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
 </resources>

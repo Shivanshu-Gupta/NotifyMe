@@ -30,7 +30,7 @@ public class PromoDatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE IF NOT EXISTS " + PromoEntry.TABLE_NAME + " (" +
                 PromoEntry._ID + " INTEGER PRIMARY KEY, " +
                 PromoEntry.COLUMN_NAME_CATEGORY + " TEXT, " +
-                PromoEntry.COLUMN_NAME_VENDOR + " TEXT, " +
+                PromoEntry.COLUMN_NAME_VENDOR + " TEXT NOT NULL, " +
                 PromoEntry.COLUMN_NAME_CODE + " TEXT, " +
                 PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT + " TEXT, " +
                 PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT + " TEXT, " +

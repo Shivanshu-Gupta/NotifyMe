@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.szugyi.circlemenu.view.CircleImageView;
 import com.szugyi.circlemenu.view.CircleLayout;
@@ -13,8 +12,10 @@ import com.szugyi.circlemenu.view.CircleLayout;
  * Created by startup on 21-04-2017.
  */
 
-public class LandingActivity extends AppCompatActivity implements CircleLayout.OnItemSelectedListener,
-        CircleLayout.OnItemClickListener, CircleLayout.OnCenterClickListener {
+public class LandingActivity extends AppCompatActivity implements
+//        CircleLayout.OnItemSelectedListener,
+        CircleLayout.OnItemClickListener,
+        CircleLayout.OnCenterClickListener {
     public static final String ARG_LAYOUT = "layout";
 
     protected CircleLayout circleLayout;
@@ -22,11 +23,11 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.landing);
+        setContentView(R.layout.activity_landing);
 
         // Set listeners
         circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
-        circleLayout.setOnItemSelectedListener(this);
+//        circleLayout.setOnItemSelectedListener(this);
         circleLayout.setOnItemClickListener(this);
 //        circleLayout.setOnRotationFinishedListener(this);
         circleLayout.setOnCenterClickListener(this);
@@ -37,38 +38,6 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
             name = ((CircleImageView) view).getName();
         }
 
-    }
-    @Override
-    public void onItemSelected(View view) {
-        final String name;
-        if (view instanceof CircleImageView) {
-            name = ((CircleImageView) view).getName();
-        } else {
-            name = null;
-        }
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        switch (view.getId()) {
-            case R.id.main_food:
-                mainIntent.putExtra("Category", 1);
-                break;
-            case R.id.main_travel:
-                mainIntent.putExtra("Category", 2);
-                break;
-            case R.id.main_clothing:
-                mainIntent.putExtra("Category", 3);
-                break;
-            case R.id.main_accessories:
-                mainIntent.putExtra("Category", 4);
-                break;
-            case R.id.main_movies:
-                mainIntent.putExtra("Category", 5);
-                break;
-            case R.id.main_misc:
-                mainIntent.putExtra("Category", 6);
-                break;
-        }
-        startActivity(mainIntent);
-        finish();
     }
 
     @Override
@@ -99,7 +68,6 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
                 break;
         }
         startActivity(mainIntent);
-        finish();
     }
 
 
@@ -108,7 +76,6 @@ public class LandingActivity extends AppCompatActivity implements CircleLayout.O
         Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.putExtra("Category", 0);
         startActivity(mainIntent);
-        finish();
     }
 
 

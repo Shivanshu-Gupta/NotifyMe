@@ -18,6 +18,7 @@ import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.F
 import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract.PromoEntry;
 import com.softwareengg.project.notifyme.Promo;
 import com.softwareengg.project.notifyme.NotifyMeDatabase.PromoDatabaseHelper;
+import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Sort;
 import com.softwareengg.project.notifyme.R;
 import com.softwareengg.project.notifyme.textprocess.TextProcessing;
 
@@ -36,7 +37,9 @@ public class PromosFragment extends Fragment {
 
     private static final String TAG = "NotifyMe";
     private static final String ARG_FILTER = "com.softwareengg.project.notifyme.PromoListFragment.PromosFragment.filter";
+    private static final String ARG_SORT = "com.softwareengg.project.notifyme.PromoListFragment.PromosFragment.sort";
     public Filter mFilter;
+    public Sort mSort;
 
     private RecyclerView mRecyclerView;
     private MyPromosRecyclerViewAdapter mAdapter;
@@ -53,15 +56,11 @@ public class PromosFragment extends Fragment {
     public PromosFragment() {
     }
 
-    public static PromosFragment newInstance(Filter filter) {
+    public static PromosFragment newInstance(Filter filter, Sort sort) {
         PromosFragment fragment = new PromosFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_FILTER, filter);
-//        if(filter.getCategory() != null) args.putString(ARG_CATEGORY, filter.getCategory());
-//        if(filter.getVendors() != null) args.putStringArrayList(ARG_VENDORS, filter.getVendors());
-//        DateFormat df = DateFormat.getDateInstance();
-//        if(filter.getReceipt() != null) args.putString(ARG_RECEIPT, df.format(filter.getReceipt()));
-//        if(filter.getExpiry() != null) args.putString(ARG_EXPIRY, df.format(filter.getExpiry()));
+        args.putSerializable(ARG_SORT, sort);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,12 +70,8 @@ public class PromosFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-//            mCategory = getArguments().getString(ARG_CATEGORY);
-//            mVendors = getArguments().getStringArrayList(ARG_VENDORS);
-//            mReceipt = getArguments().getString(ARG_RECEIPT);
-//            mExpiry = getArguments().getString(ARG_EXPIRY);
             mFilter = (Filter) getArguments().getSerializable(ARG_FILTER);
-
+            mSort = (Sort) getArguments().getSerializable(ARG_SORT);
         }
 
         mDbHelper = PromoDatabaseHelper.getInstance(getContext());
@@ -85,36 +80,20 @@ public class PromosFragment extends Fragment {
     }
 
     public void updateFilter(Filter filter) {
-//        mVendors = filter.getVendors();
-//        mReceipt = filter.getReceipt();
-//        mExpiry = filter.getExpiry();
         mFilter = filter;
         readPromos();
         mAdapter.updatePromos(mPromos);
     }
 
-    public void setToUpdate(Filter filter) {
-        mFilter = filter;
+    public void updateSort(Sort sort) {
+        mSort = sort;
         readPromos();
         mAdapter.updatePromos(mPromos);
-        toUpdate = true;
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.v(TAG, "PromosFragment : OnResume : ");
-//        if(toUpdate) {
-//            Log.v(TAG, "toBeUpdated");
-//            readPromos();
-//            mAdapter.updatePromos(mPromos);
-//        }
-//        toUpdate = false;
-//    }
 
     private void addDummies(String dummyPromo){
         Promo promo = TextProcessing.parsePromo(dummyPromo, getResources().getStringArray(R.array.vendors));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_format));
         ContentValues cv = new ContentValues();
         cv.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
         cv.put(PromoEntry.COLUMN_NAME_VENDOR,promo.getVendor());
@@ -179,8 +158,14 @@ public class PromosFragment extends Fragment {
         String selection = TextUtils.join("AND ", selections);
         String[] selectionArgs = selectionArgsList.toArray(new String[selectionArgsList.size()]);
 
-        String sortOrder =
-                PromoEntry.COLUMN_NAME_SCORE + " DESC";
+//        String sortOrder = PromoEntry.COLUMN_NAME_SCORE + " DESC";
+        final String[] sort_criteria = getResources().getStringArray(R.array.sort_criteria);
+        String sortOrder = sort_criteria[mSort.getCriteria()];
+        if(mSort.getOrder() == 0) {
+            sortOrder += " DESC";
+        } else {
+            sortOrder += " ASC";
+        }
 
         Cursor cursor = db.query(
                 PromoEntry.TABLE_NAME,                     // The table to query
@@ -205,7 +190,7 @@ public class PromosFragment extends Fragment {
             promo.setScore(cursor.getDouble(cursor.getColumnIndex(PromoEntry.COLUMN_NAME_SCORE)));
             String receipt = cursor.getString(cursor.getColumnIndex(PromoEntry.COLUMN_NAME_RECEIPT));
             String expiry = cursor.getString(cursor.getColumnIndex(PromoEntry.COLUMN_NAME_EXPIRY));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_format));
             try {
                 if(receipt != null) promo.setReceipt(new Date(sdf.parse(receipt).getTime()));
                 if(expiry != null) promo.setExpiry(new Date(sdf.parse(expiry).getTime()));
