@@ -144,9 +144,9 @@ public class TextProcessing {
         {
             if(s.contains("t&c") || s.contains("tnc") || s.contains("free") || s.contains("sale") || s.contains("discount") || s.contains("cashback"))
                 count += 3;
-            if(s.contains("off") || s.contains("flat") || s.contains("buy") || s.contains("voucher") || s.contains("coupon") || s.contains("code") || s.contains("cpn"))
+            if(s.contains("off") || s.contains("flat") || s.contains("buy") || s.contains("voucher") || s.contains("coupon") || s.contains("code") || s.contains("cpn") || s.contains("valid"))
                 count += 2;
-            if(s.contains("get") || s.contains("limited") || s.contains("period") || s.contains("extra") || s.contains("%") || s.contains("cash"))
+            if(s.contains("get") || s.contains("limited") || s.contains("period") || s.contains("extra") || s.contains("%") || s.contains("cash") || s.contains("till") || s.contains("rs"))
                 count += 1;
         }
         if(count > 5)
