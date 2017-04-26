@@ -28,7 +28,7 @@ public class PromoSMSReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // Retrieves a map of extended data from the intent.
         final Bundle bundle = intent.getExtras();
-
+        Log.v(TAG, "PromoSMSReceiver : onReceive");
         try {
             if (bundle != null) {
                 final Object[] pdusObj = (Object[]) bundle.get("pdus");
@@ -41,12 +41,13 @@ public class PromoSMSReceiver extends BroadcastReceiver {
                     Log.i(TAG, "PromoSMSReceiver: senderNum: " + senderNum + ", message: " + message);
 
                     if(isFromSupportedVendor(senderNum, message)) {
-                        Intent newPromoRecvd = new Intent("Msg");
+                        Intent newPromoRecvd = new Intent(context, PromoManager.class);
                         newPromoRecvd.putExtra("package", "");
                         newPromoRecvd.putExtra("ticker", senderNum);
                         newPromoRecvd.putExtra("title", senderNum);
                         newPromoRecvd.putExtra("text", message);
-                        LocalBroadcastManager.getInstance(context).sendBroadcast(newPromoRecvd);
+//                        LocalBroadcastManager.getInstance(context).sendBroadcast(newPromoRecvd);
+                        context.startService(newPromoRecvd);
                     }
                 } // end for loop
             } // bundle is null

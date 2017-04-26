@@ -5,8 +5,12 @@ import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 
 import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract.PromoEntry;
 import com.softwareengg.project.notifyme.Promo;
@@ -16,26 +20,45 @@ import com.softwareengg.project.notifyme.textprocess.TextProcessing;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
  * Created by Deepanker Mishra on 04-04-2017.
  */
 
-public class PromoManager extends IntentService{
+public class PromoManager extends IntentService implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String TAG = "NotifyMe";
 
+    PromoDatabaseHelper dbHelper;
+    private SharedPreferences mSharedPreferences;
+    private boolean notify;
+    private Set<String> vendors;
     public final int SCORE_THRESHOLD = 100;
+
+    /**
+     * A constructor is required, and must call the super IntentService(String)
+     * constructor with a name for the worker thread.
+     */
+    public PromoManager() {
+        super("PromoManager");
+    }
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
      * @param name Used to name the worker thread, important only for debugging.
      */
-    PromoDatabaseHelper dbHelper;
     public PromoManager(String name) {
         super(name);
+    }
+
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override
@@ -44,14 +67,21 @@ public class PromoManager extends IntentService{
         //store parsed promo in db:PROMOS_TABLE
         //through notification if >threshold
         String promoMsg = intent.getStringExtra("text");
+        Log.v(TAG, "new message received: " + promoMsg);
         Promo promo = TextProcessing.parsePromo(promoMsg, getResources().getStringArray(R.array.vendors));
+        if(promo == null) {
+            // NOT A PROMO
+            return;
+        }
+        Log.v(TAG, "new promo received: " + promoMsg);
+
         SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_format));
         ContentValues values = new ContentValues();
         values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
-        values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
+        if(promo.getCode() != null) values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
         values.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
         values.put(PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT,promo.getDiscountPercentage());
-        values.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
+        if(promo.getExpiry() != null) values.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
         values.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
         values.put(PromoEntry.COLUMN_NAME_PROMO_MSG, promo.getPromoMsg());
         if(intent.getStringExtra("package") != null && !intent.getStringExtra("package").equals("")) {
@@ -66,7 +96,10 @@ public class PromoManager extends IntentService{
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.insert(PromoEntry.TABLE_NAME,null,values);
 
-        if(promo.getScore()>=SCORE_THRESHOLD){
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        notify = mSharedPreferences.getBoolean("notify", true);
+        vendors = mSharedPreferences.getStringSet("vendors", new HashSet<String>());
+        if(notify && promo.getScore()>=SCORE_THRESHOLD && vendors.contains(promo.getVendor())){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
             //builder.setSmallIcon(getResources().getDrawable(R.drawable.noti) R.drawable.notification_icon);
             builder.setContentTitle("Notification Alert, Click Me!");
@@ -75,13 +108,12 @@ public class PromoManager extends IntentService{
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify(0, builder.build());
         }
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            // Restore interrupt status.
-            Thread.currentThread().interrupt();
-        }
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        notify = mSharedPreferences.getBoolean("notify", true);
+        vendors = mSharedPreferences.getStringSet("vendors", new HashSet<String>());
+    }
 }

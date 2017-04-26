@@ -100,6 +100,7 @@ public class PromosFragment extends Fragment {
         cv.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
         cv.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
         cv.put(PromoEntry.COLUMN_NAME_DISCOUNT_PERCENT,promo.getDiscountPercentage());
+        if(promo.getExpiry() != null) cv.put(PromoEntry.COLUMN_NAME_EXPIRY, sdf.format(promo.getExpiry()));
         cv.put(PromoEntry.COLUMN_NAME_MAX_USES, promo.getMaxUses());
         cv.put(PromoEntry.COLUMN_NAME_SCORE, promo.getScore());
         cv.put(PromoEntry.COLUMN_NAME_RECEIPT, sdf.format(new java.util.Date()));
@@ -116,13 +117,13 @@ public class PromosFragment extends Fragment {
 
         //Check if table is empty, insert dummies if empty
         Cursor mCursor = db.rawQuery("SELECT * FROM " + PromoEntry.TABLE_NAME, null);
-        if(mCursor.getCount() == 0) {
-            addDummies("Dear Rider, POOL is at flat Rs49 in NCR only till tomorrow 9 Feb! Valid on trips within Gurgaon, Delhi, Noida-Ghaziabad & Faridabad, upto 8km. t.uber.com/49ncr");
-            addDummies("Delicious foodpanda offer - 40% off on your first order. Use code NEWPANDA. Pay via wallets & 15% cash back too. Order Now: https://chk.bz/9k8pe69wzb");
-            addDummies("Dear Rider, use code DELWEEK & get Rs. 50 off 2 rides on uberGO or uberX. Valid only for you till midnight of Wed. 25 Jan, in Delhi NCR. Uber on!");
-            addDummies("Don't miss this! Use code JAN50 before 24 Jan & get Rs.50 cashback on Rs.50 transaction for deepanker27mishra@gmail.com. T&C Apply: http://frch.in/kk");
-            addDummies("Dominos Super Value Offer \\\"Only For You\\\";Buy 1 Medium/Large Pizza &Get 30% OFF.WalkIn/Order@ 68886888/ goo.gl/CQThqp Cpn: CRMF182F4EC80 Valid till 08 Jan T&C");
-        }
+//        if(mCursor.getCount() == 0) {
+//            addDummies("Dear Rider, POOL is at flat Rs49 in NCR only till tomorrow 9 Feb! Valid on trips within Gurgaon, Delhi, Noida-Ghaziabad & Faridabad, upto 8km. t.uber.com/49ncr");
+//            addDummies("Delicious foodpanda offer - 40% off on your first order. Use code NEWPANDA. Pay via wallets & 15% cash back too. Order Now: https://chk.bz/9k8pe69wzb");
+//            addDummies("Dear Rider, use code DELWEEK & get Rs. 50 off 2 rides on uberGO or uberX. Valid only for you till midnight of Wed. 25 Jan, in Delhi NCR. Uber on!");
+//            addDummies("Don't miss this! Use code JAN50 before 24 Jan & get Rs.50 cashback on Rs.50 transaction for deepanker27mishra@gmail.com. T&C Apply: http://frch.in/kk");
+//            addDummies("Dominos Super Value Offer \\\"Only For You\\\";Buy 1 Medium/Large Pizza &Get 30% OFF.WalkIn/Order@ 68886888/ goo.gl/CQThqp Cpn: CRMF182F4EC80 Valid till 08 Jan T&C");
+//        }
 
         // which columns to fetch
         String[] projection = null;     // read all columns

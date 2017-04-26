@@ -1,6 +1,5 @@
 package com.softwareengg.project.notifyme.Settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -12,19 +11,23 @@ import com.softwareengg.project.notifyme.R;
  * Created by startup on 25-04-2017.
  */
 
-public class NotifyMeSettingsActivity extends PreferenceActivity  implements SharedPreferences.OnSharedPreferenceChangeListener{
-    SharedPreferences sharedPref;
+public class NotifyMeSettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new NotifyMePreferenceFragment()).commit();
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.registerOnSharedPreferenceChangeListener(this);
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
+    public static class NotifyMePreferenceFragment extends PreferenceFragment
+    {
+        private static final String TAG = "NotifyMe";
+        @Override
+        public void onCreate(final Bundle savedInstanceState)
+        {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.notifyme_setting);
+            PreferenceManager.setDefaultValues(getActivity(), R.xml.notifyme_setting, true);
+        }
     }
 
 }
