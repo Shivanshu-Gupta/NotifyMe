@@ -11,5 +11,6 @@
     android:summary="Select vendors of interest"
     android:key="vendors"
     android:entries="@array/vendors"
-    android:entryValues="@array/vendorsValues" />
+    android:entryValues="@array/vendorsValues"
+    android:defaultValue="@array/vendorsValues"/>
 </PreferenceScreen>
