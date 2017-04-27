@@ -12,5 +12,5 @@
     android:key="vendors"
     android:entries="@array/vendors"
     android:entryValues="@array/vendorsValues"
-    android:defaultValue="@array/vendorsValues"/>
+    />
 </PreferenceScreen>

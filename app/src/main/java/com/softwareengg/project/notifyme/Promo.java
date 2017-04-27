@@ -1,7 +1,7 @@
 package com.softwareengg.project.notifyme;
 
 import java.sql.Date;
-
+//promo object that represents a promo message
 public class Promo {
     private static final String TAG = "NotifyMe";
     

@@ -68,7 +68,6 @@ public class PromoManager extends IntentService{
 
         if(promo.getScore()>=SCORE_THRESHOLD){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-            //builder.setSmallIcon(getResources().getDrawable(R.drawable.noti) R.drawable.notification_icon);
             builder.setContentTitle("Notification Alert, Click Me!");
             builder.setContentText("Hi, This is Android Notification Detail!");
             // Add as notification

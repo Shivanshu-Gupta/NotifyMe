@@ -3,15 +3,12 @@ package com.softwareengg.project.notifyme.Settings;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-
-import com.softwareengg.project.notifyme.R;
 
 /**
  * Created by startup on 25-04-2017.
  */
-
+//class to handle preferences in more customized way (Not in use much currently)
 public class NotifyMeSettingsActivity extends PreferenceActivity  implements SharedPreferences.OnSharedPreferenceChangeListener{
     SharedPreferences sharedPref;
     @Override
