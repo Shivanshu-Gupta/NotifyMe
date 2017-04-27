@@ -1,9 +1,13 @@
 package com.softwareengg.project.notifyme;
 
 import java.sql.Date;
-//promo object that represents a promo message
+
+/**
+ * Created by shivanshu on 31/03/17.
+ * Purpose: Represents a parsed promo message.
+ */
+
 public class Promo {
-    private static final String TAG = "NotifyMe";
     
     private String category;
     private String vendor;

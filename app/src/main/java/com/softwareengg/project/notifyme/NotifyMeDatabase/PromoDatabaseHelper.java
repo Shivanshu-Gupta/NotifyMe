@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract.PromoEntry;
 
 /**
- * Created by Shivanshu Gupta on 19-Sep-15.
+ * Created by shivanshu on 19-Sep-15.
+ *
+ * Purpose
+ * - helper class for database accesses.
  */
 public class PromoDatabaseHelper extends SQLiteOpenHelper{
     private static final String TAG = "NotifyMe";
@@ -18,6 +21,8 @@ public class PromoDatabaseHelper extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // The right way to create an instance of this class
+    // Ensures only one instance exists at any time.
     public static synchronized PromoDatabaseHelper getInstance(Context context) {
         if(db == null) {
             db = new PromoDatabaseHelper(context.getApplicationContext());
@@ -27,6 +32,7 @@ public class PromoDatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Create the PromosTable if it hasn't been created yet.
         db.execSQL("CREATE TABLE IF NOT EXISTS " + PromoEntry.TABLE_NAME + " (" +
                 PromoEntry._ID + " INTEGER PRIMARY KEY, " +
                 PromoEntry.COLUMN_NAME_CATEGORY + " TEXT, " +
@@ -40,13 +46,6 @@ public class PromoDatabaseHelper extends SQLiteOpenHelper{
                 PromoEntry.COLUMN_NAME_EXPIRY + " STRING, " +
                 PromoEntry.COLUMN_NAME_PROMO_MSG + " TEXT NOT NULL)"
         );
-
-//        db.execSQL("CREATE TABLE fileSizes (cloudFileName TEXT, size REAL, cloudList TEXT)");
-//        ContentValues cv=new ContentValues();
-//
-//        cv.put(FILENAME, "This");
-//        cv.put(SIZE, 4);
-//        db.insert(TABLE, FILENAME, cv);
     }
 
     @Override

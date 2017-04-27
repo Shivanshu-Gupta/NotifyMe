@@ -16,10 +16,11 @@ import java.util.Set;
 
 /**
  * Created by shivanshu on 31/03/17.
+ *
  * Purpose:
  * - Listens to notifications from other apps;
  * - checks if the notification is a Promo from a supported Vendor.
- * - forwards Promos to Scoring Module for processing.
+ * - forwards Promos to PromoManager for processing.
  */
 
 
@@ -56,13 +57,14 @@ public class PromoNotificationListenerService extends NotificationListenerServic
             Log.i(TAG, "Title: " + title);
             Log.i(TAG, "Text: " + text);
 
+            // Invoke the PromoManager to process this message if the notification is from a
+            // supported vendor app.
             if(isFromSupportedVendor(extras)) {
                 Intent newPromoRecvd = new Intent(context, PromoManager.class);
                 newPromoRecvd.putExtra("package", pack);
                 newPromoRecvd.putExtra("ticker", ticker);
                 newPromoRecvd.putExtra("title", title);
                 newPromoRecvd.putExtra("text", text);
-//                LocalBroadcastManager.getInstance(context).sendBroadcast(newPromoRecvd);
                 context.startService(newPromoRecvd);
             }
         }

@@ -9,13 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softwareengg.project.notifyme.Promo;
-import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment.OnListFragmentInteractionListener;
+import com.softwareengg.project.notifyme.PromoListFragment.PromosListFragment.OnListFragmentInteractionListener;
 import com.softwareengg.project.notifyme.R;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRecyclerViewAdapter.ViewHolder> {
+/**
+ * Created by shivanshu on 31/03/17.
+ * Purpose:
+ * - manage the list of Promos to be shown in the PromosListFragment
+ * - manage the UI elements corresponding to each Promo in the list.
+ */
+
+public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRecyclerViewAdapter.PromoViewHolder> {
 
     private static final String TAG = "NotifyMe";
 
@@ -34,14 +41,14 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PromoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_promos, parent, false);
-        return new ViewHolder(view);
+        return new PromoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final PromoViewHolder holder, final int position) {
         holder.mPromo = mPromos.get(position);
         holder.mTitleView.setText("HOT DEAL");
         holder.mVendorView.setText(mPromos.get(position).getVendor());
@@ -55,8 +62,12 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
         return mPromos.size();
     }
 
-    // TODO: modify this ViewHolder as required
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    /**.
+     * Purpose:
+     * - A wrapper class for each item in the list.
+     * - holds promo information and UI elements.
+     */
+    public class PromoViewHolder extends RecyclerView.ViewHolder {
         public Promo mPromo;
         public final View mView;
         public final TextView mTitleView;
@@ -64,14 +75,14 @@ public class MyPromosRecyclerViewAdapter extends RecyclerView.Adapter<MyPromosRe
         public final TextView mReceiptView;
         public final ImageView mVendorLogoView;
 
-        public ViewHolder(View view) {
+        public PromoViewHolder(View view) {
             super(view);
             mView = view;
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
-                        // Notify the active callbacks interface (the activity, if the
+                        // Notify sthe active callbacks interface (the activity, if the
                         // fragment is attached to one) that an item has been selected.
                         Log.v(TAG, "Promo clicked: " + mPromo.getPromoMsg());
                         mListener.onPromoSelected(mPromo);

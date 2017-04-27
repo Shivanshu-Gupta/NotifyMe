@@ -25,7 +25,6 @@ public class PromoDetailsDialog extends DialogFragment {
     private static final String ARG_CODE = "code";
     private static final String ARG_DISCOUT_AMOUNT = "discountAmount";
     private static final String ARG_DISCOUT_PERCENTAGE = "discountPercentage";
-    private Date mReceipt;
     private static final String ARG_EXPIRY = "expiry";
     private static final String ARG_MESSAGE = "message";
     private static final String ARG_VENDOR = "vendor";

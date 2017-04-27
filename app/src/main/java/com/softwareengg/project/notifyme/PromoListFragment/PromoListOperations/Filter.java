@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Created by shivanshu on 15/04/17.
+ *
+ * Pupose
+ * - Represents the set of filters.
  */
 
 public class Filter implements Serializable {

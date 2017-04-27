@@ -1,6 +1,5 @@
 package com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,32 +17,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.softwareengg.project.notifyme.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-
 /**
  * Created by shivanshu on 26/04/17.
+ *
+ * - UI for user to select Sorting parameters to apply to the Promo list in the current tab.
+ * - Provides sorting criteria like vendor, receipt date and expiry date.
  */
 
 public class SortDialogFragment extends DialogFragment {
     private static final String TAG = "NotifyMe";
 
     private static final String ARG_SORT = "com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.VendorSortDialogFragment.sort";
+
+    // Currently set sorting parameters.
     public Sort mSort;
 
+    // UI elements for showing currently set filters.
     private EditText mCriteriaText;
     private EditText mDirectionText;
 
     // Use this instance of the interface to deliver action events
     SortDialogFragment.SortDialogListener mListener;
 
+    // The right way to create an instance of this fragment
+    // Takes as input the currently set sorting criteria.
     public static SortDialogFragment newInstance(Sort sort) {
         SortDialogFragment fragment = new SortDialogFragment();
         Bundle args = new Bundle();
@@ -71,13 +71,14 @@ public class SortDialogFragment extends DialogFragment {
         }
         setHasOptionsMenu(true);
 
+        // set the current sorting parameters if supplied as arguments else close
         if(getArguments() != null) {
             mSort = (Sort) getArguments().getSerializable(ARG_SORT);
-
         } else {
             dismiss();
         }
 
+        // Setup UI for sorting criteria and set listeners for change.
         final String[] sort_criteria = getResources().getStringArray(R.array.sort_criteria);
         mCriteriaText = (EditText) rootView.findViewById(R.id.criteria);
         mCriteriaText.setText(sort_criteria[mSort.getCriteria()]);
@@ -87,7 +88,6 @@ public class SortDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Select Vendors")
-                        //.setMessage(R.string.dialog_fire_missiles)
                         // Specify the list array, the items to be selected by default (null for none),
                         // and the listener through which to receive callbacks when items are selected
                         .setSingleChoiceItems(sort_criteria, mSort.getCriteria(), new DialogInterface.OnClickListener() {
@@ -112,6 +112,7 @@ public class SortDialogFragment extends DialogFragment {
             }
         });
 
+        // Setup UI for sorting direction and set listeners for change.
         final String[] sort_direction = {"Descending", "Ascending"};
         mDirectionText = (EditText) rootView.findViewById(R.id.direction);
         mDirectionText.setText(sort_direction[mSort.getOrder()]);

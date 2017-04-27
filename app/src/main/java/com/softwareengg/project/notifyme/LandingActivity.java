@@ -13,10 +13,8 @@ import com.szugyi.circlemenu.view.CircleLayout;
  */
 
 public class LandingActivity extends AppCompatActivity implements
-//        CircleLayout.OnItemSelectedListener,
         CircleLayout.OnItemClickListener,
         CircleLayout.OnCenterClickListener {
-    public static final String ARG_LAYOUT = "layout";
 
     protected CircleLayout circleLayout;
 
@@ -27,9 +25,7 @@ public class LandingActivity extends AppCompatActivity implements
 
         // Set listeners
         circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
-//        circleLayout.setOnItemSelectedListener(this);
         circleLayout.setOnItemClickListener(this);
-//        circleLayout.setOnRotationFinishedListener(this);
         circleLayout.setOnCenterClickListener(this);
 
         String name = null;

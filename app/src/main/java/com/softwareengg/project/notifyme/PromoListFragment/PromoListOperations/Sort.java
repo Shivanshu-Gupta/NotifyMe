@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 /**
  * Created by shivanshu on 26/04/17.
+ *
+ * Purpose
+ * - Container for the sorting criteria and the direction.
  */
 
-public class Sort implements Serializable{
+public class Sort implements Serializable {
     int criteria;
     int order;
 

@@ -16,10 +16,11 @@ import android.widget.Toast;
  * Purpose:
  * - Receives SMSes.
  * - checks if the SMS is a Promo from a supported Vendor.
- * - forwards Promos to Scoring Module for processing.
+ * - forwards Promos to PromoManager Module for processing.
  */
 
 public class PromoSMSReceiver extends BroadcastReceiver {
+
     private static final String TAG = "NotifyMe";
     private final SmsManager sms = SmsManager.getDefault();
     public Context context;
@@ -40,15 +41,13 @@ public class PromoSMSReceiver extends BroadcastReceiver {
 
                     Log.i(TAG, "PromoSMSReceiver: senderNum: " + senderNum + ", message: " + message);
 
-                    if(isFromSupportedVendor(senderNum, message)) {
-                        Intent newPromoRecvd = new Intent(context, PromoManager.class);
-                        newPromoRecvd.putExtra("package", "");
-                        newPromoRecvd.putExtra("ticker", senderNum);
-                        newPromoRecvd.putExtra("title", senderNum);
-                        newPromoRecvd.putExtra("text", message);
-//                        LocalBroadcastManager.getInstance(context).sendBroadcast(newPromoRecvd);
-                        context.startService(newPromoRecvd);
-                    }
+                    // Invokes the PromoManager to process this message
+                    Intent newPromoRecvd = new Intent(context, PromoManager.class);
+                    newPromoRecvd.putExtra("package", "");
+                    newPromoRecvd.putExtra("ticker", senderNum);
+                    newPromoRecvd.putExtra("title", senderNum);
+                    newPromoRecvd.putExtra("text", message);
+                    context.startService(newPromoRecvd);
                 } // end for loop
             } // bundle is null
         } catch (Exception e) {
@@ -56,10 +55,4 @@ public class PromoSMSReceiver extends BroadcastReceiver {
         }
     }
 
-
-    private boolean isFromSupportedVendor(String phoneNumber, String message) {
-        // TODO: check from database if the SMS is a promo from a supported Vendor.
-
-        return true;
-    }
 }

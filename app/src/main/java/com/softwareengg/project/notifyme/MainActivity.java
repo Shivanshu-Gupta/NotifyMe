@@ -21,20 +21,25 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-import com.softwareengg.project.notifyme.NotifyMeDatabase.NotifyMeContract;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoDetailsDialog;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.FilterDialogFragment;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Filter;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.Sort;
 import com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.SortDialogFragment;
-import com.softwareengg.project.notifyme.PromoListFragment.PromosFragment;
+import com.softwareengg.project.notifyme.PromoListFragment.PromosListFragment;
 import com.softwareengg.project.notifyme.Settings.NotifyMeSettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by shivanshu on 31/03/17.
+ * Purpose: This Is the Main UI of the App. It holds tabs for each category's
+ * PromoListFragments.
+ */
+
 public class MainActivity extends AppCompatActivity
-        implements PromosFragment.OnListFragmentInteractionListener,
+        implements PromosListFragment.OnListFragmentInteractionListener,
         FilterDialogFragment.FilterDialogListener,
         SortDialogFragment.SortDialogListener {
     private static final String TAG = "NotifyMe";
@@ -78,6 +83,8 @@ public class MainActivity extends AppCompatActivity
         if(b != null) {
             mViewPager.setCurrentItem(b.getInt("Category"));
         }
+
+        // Setup Tabs with the sections and icons
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         setupTabIcons();
@@ -90,7 +97,7 @@ public class MainActivity extends AppCompatActivity
             Filter filter = new Filter();
             if(i > 0) filter.setCategory(category);
             Sort sort = new Sort(0, 0);
-            mSectionsPagerAdapter.addFragment(PromosFragment.newInstance(filter, sort), category);
+            mSectionsPagerAdapter.addFragment(PromosListFragment.newInstance(filter, sort), category);
         }
     }
 
@@ -108,20 +115,22 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // Setup the code to execute when menu items are clicked.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.v(TAG, "Filter : current tab : " + mViewPager.getCurrentItem());
+        // Get the Fragment corresponding to the current tab.
         String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
-        PromosFragment promosFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+        PromosListFragment promosListFragment = (PromosListFragment) getSupportFragmentManager().findFragmentByTag(name);
 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as the parent activity is specified in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_filter:
-//                DialogFragment newFragment = new VendorFilterDialogFragment();
-                if(promosFragment != null) {
-                    FilterDialogFragment newFragment = FilterDialogFragment.newInstance(promosFragment.mFilter);
+                // User chose the "Filter" item, show Filter options UI...
+                if(promosListFragment != null) {
+                    FilterDialogFragment newFragment = FilterDialogFragment.newInstance(promosListFragment.mFilter);
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     transaction.add(android.R.id.content, newFragment)
@@ -130,19 +139,15 @@ public class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.action_sort:
-                // User chose the "Settings" item, show the app settings UI...
-                if(promosFragment != null) {
-                    SortDialogFragment newFragment = SortDialogFragment.newInstance(promosFragment.mSort);
+                // User chose the "Sort" item, show Sort options UI...
+                if(promosListFragment != null) {
+                    SortDialogFragment newFragment = SortDialogFragment.newInstance(promosListFragment.mSort);
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     transaction.add(android.R.id.content, newFragment)
                             .addToBackStack(null).commit();
                 }
                 return true;
-
-//            case R.id.action_delete:
-//                // User chose the "Settings" item, show the app settings UI...
-//                return true;
 
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
@@ -164,7 +169,7 @@ public class MainActivity extends AppCompatActivity
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private final List<PromosFragment> mFragmentList = new ArrayList<>();
+        private final List<PromosListFragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -172,7 +177,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public PromosFragment getItem(int position) {
+        public PromosListFragment getItem(int position) {
             return mFragmentList.get(position);
         }
 
@@ -181,7 +186,7 @@ public class MainActivity extends AppCompatActivity
             return mFragmentList.size();
         }
 
-        public void addFragment(PromosFragment fragment, String title) {
+        public void addFragment(PromosListFragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -192,34 +197,39 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // Utility function for converting fragment index to it's name
     private static String makeFragmentName(int viewId, int position) {
         return "android:switcher:" + viewId + ":" + position;
     }
 
 
+    // User selected filters in Filter UI - apply them to the current Category.
     @Override
     public void onApplyFilter(DialogFragment dialog, Filter filter) {
         Log.v(TAG, TextUtils.join(", ", filter.getVendors()));
         String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
-        PromosFragment viewPagerFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+        PromosListFragment viewPagerFragment = (PromosListFragment) getSupportFragmentManager().findFragmentByTag(name);
         viewPagerFragment.updateFilter(filter);
     }
 
 
+    // User selected sorts in Sort UI - apply them to the current Category.
     @Override
     public void onApplySort(DialogFragment dialog, Sort sort) {
         Log.v(TAG, String.valueOf(sort.getCriteria()));
         String name = makeFragmentName(mViewPager.getId(), mViewPager.getCurrentItem());
-        PromosFragment viewPagerFragment = (PromosFragment) getSupportFragmentManager().findFragmentByTag(name);
+        PromosListFragment viewPagerFragment = (PromosListFragment) getSupportFragmentManager().findFragmentByTag(name);
         viewPagerFragment.updateSort(sort);
     }
 
+    // User selected a promo, show full the details.
     @Override
     public void onPromoSelected(Promo promo) {
         PromoDetailsDialog promoDetailsDialog = PromoDetailsDialog.newInstance(promo);
         promoDetailsDialog.show(getSupportFragmentManager(), "promo");
     }
 
+    // A good animation for transition between tabs
     private class DepthPageTransformer implements ViewPager.PageTransformer {
         private static final float MIN_SCALE = 0.75f;
 

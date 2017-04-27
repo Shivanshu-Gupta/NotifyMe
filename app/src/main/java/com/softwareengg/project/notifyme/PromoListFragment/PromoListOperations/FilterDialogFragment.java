@@ -31,16 +31,22 @@ import java.util.Calendar;
 
 /**
  * Created by shivanshu on 26/04/17.
+ *
+ * Purpose
+ * - UI for user to select Filters to apply to the Promo list in the current tab.
+ * - Provides filters for vendors, date of receipt and date of expiry.
  */
 
 public class FilterDialogFragment extends DialogFragment {
     private static final String TAG = "NotifyMe";
 
     private static final String ARG_FILTER = "com.softwareengg.project.notifyme.PromoListFragment.PromoListOperations.VendorFilterDialogFragment.filter";
+    // Current filters
     public Filter mFilter;
     public Calendar mReceipt = Calendar.getInstance();
     public Calendar mExpiry = Calendar.getInstance();
 
+    // UI elements for showing currently set filters.
     private EditText mSelectedVendorsText;
     private EditText mReceiptText;
     private EditText mExpiryText;
@@ -48,6 +54,8 @@ public class FilterDialogFragment extends DialogFragment {
     // Use this instance of the interface to deliver action events
     FilterDialogListener mListener;
 
+    // The right way to create an instance of this fragment
+    // Takes as input the currently set filters.
     public static FilterDialogFragment newInstance(Filter filter) {
         FilterDialogFragment fragment = new FilterDialogFragment();
         Bundle args = new Bundle();
@@ -61,11 +69,11 @@ public class FilterDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout to use as dialog or embedded fragment
         View rootView =  inflater.inflate(R.layout.filter_dialog, container, false);
+
+        // setup the Toolbar
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         toolbar.setTitle("Filter");
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -74,6 +82,7 @@ public class FilterDialogFragment extends DialogFragment {
         }
         setHasOptionsMenu(true);
 
+        // set the current filters if supplied as arguments else close
         if(getArguments() != null) {
             mFilter = (Filter) getArguments().getSerializable(ARG_FILTER);
             ArrayList<String> selectedVendors = mFilter.getVendors();
@@ -96,6 +105,7 @@ public class FilterDialogFragment extends DialogFragment {
             dismiss();
         }
 
+        // Setup UI for vendor filter and set listeners for change.
         mSelectedVendorsText = (EditText) rootView.findViewById(R.id.selected_vendors);
         mSelectedVendorsText.setText(TextUtils.join(", ", mFilter.getVendors()));
         mSelectedVendorsText.setClickable(true);
@@ -106,6 +116,7 @@ public class FilterDialogFragment extends DialogFragment {
             }
         });
 
+        // Setup UI for receipt date filter and set listeners for change.
         mReceiptText = (EditText) rootView.findViewById(R.id.receipt_date);
         if(mFilter.getReceipt() != null) mReceiptText.setText(mFilter.getReceipt());
         mReceiptText.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +145,7 @@ public class FilterDialogFragment extends DialogFragment {
             }
         });
 
+        // Setup UI for expiry date filter and set listeners for change.
         mExpiryText = (EditText) rootView.findViewById(R.id.expiry_date);
         if(mFilter.getExpiry() != null) mExpiryText.setText(mFilter.getExpiry());
         mExpiryText.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +174,7 @@ public class FilterDialogFragment extends DialogFragment {
         return rootView;
     }
 
+    // Show the dialog to let user set the Vendors filter.
     private void showVendorSelectDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] vendors = getResources().getStringArray(R.array.vendors);

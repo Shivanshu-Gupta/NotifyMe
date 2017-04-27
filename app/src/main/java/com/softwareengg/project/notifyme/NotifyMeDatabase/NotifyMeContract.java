@@ -4,6 +4,8 @@ import android.provider.BaseColumns;
 
 /**
  * Created by shivanshu on 15/04/17.
+ *
+ * Database Schema
  */
 
 public final class NotifyMeContract {
@@ -11,7 +13,7 @@ public final class NotifyMeContract {
     // make the constructor private.
     private NotifyMeContract() {}
 
-    /* Inner class that defines the Promo table contents */
+    /* Inner class that defines the Promo table columns */
     public static class PromoEntry implements BaseColumns {
         public static final String TABLE_NAME = "Promos";
         public static final String COLUMN_NAME_CATEGORY = "category";
