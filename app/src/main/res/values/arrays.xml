@@ -20,12 +20,18 @@
     <string-array name="vendors">
         <item>Paytm</item>
         <item>Mobikwik</item>
+        <item>Shopclues</item>
         <item>Zomato</item>
         <item>Faasos</item>
         <item>Foodpanda</item>
         <item>Dominos</item>
         <item>Uber</item>
         <item>Ola</item>
+        <item>MakeMyTrip</item>
+        <item>Adidas</item>
+        <item>Reebok</item>
+        <item>Levi</item>
+        <item>Arrow</item>
         <item>Myntra</item>
         <item>Amazon</item>
         <item>Others</item>
@@ -42,6 +48,12 @@
         <item>9</item>
         <item>10</item>
         <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
     </string-array>
 
     <string-array name="sort_criteria">

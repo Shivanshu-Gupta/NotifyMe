@@ -19,6 +19,8 @@ public class TextProcessingTest {
     public static String promo5 = "Dominos Super Value Offer Only For You;Buy 1 Medium/Large Pizza &Get 30% OFF.WalkIn/Order@ 68886888/ goo.gl/CQThqp Cpn: CRMF182F4EC80 Valid till 08 Jan T&C";
     public static String nonpromo = "Hello, let's meet today at 4:30 pm. Please don't be late.";
 
+    public static String promo7 = "Don’t let Cockroaches hide in your home during Winters. Pest Control by HICARE with FLAT 40% Off on yearly Cockroach Service.T&C*.For details, sms PEST to 56161";
+
     String str1 = promo1.replaceAll("[.,!\n]", " ");
     String lowerstr1 = str1.toLowerCase();
     String[] msg1 = lowerstr1.split(" +");
@@ -48,6 +50,11 @@ public class TextProcessingTest {
     String lowerstr6 = str6.toLowerCase();
     String[] msg6 = lowerstr6.split(" +");
 
+    String str7 = promo7.replaceAll("[.,!\n]", " ");
+    String lowerstr7 = str7.toLowerCase();
+    String[] msg7 = lowerstr7.split(" +");
+    String[] org7 = str7.split(" +");
+
     @Test
     public void getCode() throws Exception {
         String exp2 = "NEWPANDA";
@@ -65,6 +72,10 @@ public class TextProcessingTest {
         String exp5 = "CRMF182F4EC80";
         String result5 = TextProcessing.getCode(msg5,org5);
         assertEquals(exp5, result5);
+
+        String exp7 = null;
+        String result7 = TextProcessing.getCode(msg7,org7);
+        assertEquals(exp7, result7);
     }
 
     @Test
@@ -76,6 +87,10 @@ public class TextProcessingTest {
         int exp5 = 30;
         int result5 = TextProcessing.getDiscountPercent(msg5);
         assertEquals(exp5, result5);
+
+        int exp7 = 40;
+        int result7 = TextProcessing.getDiscountPercent(msg7);
+        assertEquals(exp7, result7);
     }
 
     @Test
@@ -91,6 +106,10 @@ public class TextProcessingTest {
         int exp4 = 50;
         int result4 = TextProcessing.getDiscountAmount(msg4);
         assertEquals(exp4, result4);
+
+        int exp7 = 0;
+        int result7 = TextProcessing.getDiscountAmount(msg7);
+        assertEquals(exp7, result7);
     }
 
 
@@ -152,9 +171,29 @@ public class TextProcessingTest {
         boolean result1 = TextProcessing.isPromo(msg1);
         assertEquals(exp1, result1);
 
+        boolean exp2 = true;
+        boolean result2 = TextProcessing.isPromo(msg2);
+        assertEquals(exp2, result2);
+
+        boolean exp3 = true;
+        boolean result3 = TextProcessing.isPromo(msg3);
+        assertEquals(exp3, result3);
+
+        boolean exp4 = true;
+        boolean result4 = TextProcessing.isPromo(msg4);
+        assertEquals(exp4, result4);
+
+        boolean exp5 = true;
+        boolean result5 = TextProcessing.isPromo(msg5);
+        assertEquals(exp5, result5);
+
         boolean exp6 = false;
         boolean result6 = TextProcessing.isPromo(msg6);
         assertEquals(exp6, result6);
+
+        boolean exp7 = true;
+        boolean result7 = TextProcessing.isPromo(msg7);
+        assertEquals(exp7, result7);
     }
 
     @Test
@@ -178,6 +217,10 @@ public class TextProcessingTest {
         String exp5 = "food";
         String result5 = TextProcessing.getCategory(msg5);
         assertEquals(exp5, result5);
+
+        String exp7 = "misc";
+        String result7 = TextProcessing.getCategory(msg7);
+        assertEquals(exp7, result7);
     }
 
 }

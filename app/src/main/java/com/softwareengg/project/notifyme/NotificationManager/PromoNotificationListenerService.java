@@ -9,6 +9,11 @@ import android.service.notification.StatusBarNotification;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.softwareengg.project.notifyme.R;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by shivanshu on 31/03/17.
  * Purpose:
@@ -22,11 +27,16 @@ public class PromoNotificationListenerService extends NotificationListenerServic
     private static final String TAG = "NotifyMe";
 
     public Context context;
-
+    private Set<String> supportedVendors;
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        String[] vendors = getResources().getStringArray(R.array.vendors);
+        Set<String> supportedVendors = new HashSet<>();
+        for(String vendor : vendors) {
+            supportedVendors.add(vendor);
+        }
     }
 
     @Override
@@ -47,22 +57,20 @@ public class PromoNotificationListenerService extends NotificationListenerServic
             Log.i(TAG, "Text: " + text);
 
             if(isFromSupportedVendor(extras)) {
-                Intent newPromoRecvd = new Intent("Msg");
+                Intent newPromoRecvd = new Intent(context, PromoManager.class);
                 newPromoRecvd.putExtra("package", pack);
                 newPromoRecvd.putExtra("ticker", ticker);
                 newPromoRecvd.putExtra("title", title);
                 newPromoRecvd.putExtra("text", text);
-                LocalBroadcastManager.getInstance(context).sendBroadcast(newPromoRecvd);
+//                LocalBroadcastManager.getInstance(context).sendBroadcast(newPromoRecvd);
+                context.startService(newPromoRecvd);
             }
         }
-
         
     }
 
     private boolean isFromSupportedVendor(Bundle extras) {
-        // TODO: check from database if the notification is a promo from a supported Vendor.
-
-        return true;
+        return supportedVendors.contains(extras.getString("package"));
     }
 }
 

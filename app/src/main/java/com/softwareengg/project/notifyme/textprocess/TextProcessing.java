@@ -1,5 +1,7 @@
 package com.softwareengg.project.notifyme.textprocess;
 
+import android.util.Log;
+
 import com.softwareengg.project.notifyme.Promo;
 
 import java.sql.Date;
@@ -8,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.Math;
 
 /**
  * Created by shivanshu on 20/02/17.
@@ -119,15 +122,13 @@ public class TextProcessing {
                     if(msg[i+1].contains("%"))
                         continue;
                     else{
-                        if(msg[i+1].equals("rs") || msg[i+1].equals("rupee") || msg[i+1].equals("rupee"))
-                        {
+                        if(msg[i+1].equals("rs") || msg[i+1].equals("rupee") || msg[i+1].equals("rupee")) {
                             if(msg[i+2].contains("%"))
                                 continue;
                             else
                                 answer = msg[i+2];
                         }
-                        else
-                            answer = msg[i+1];
+
                     }
                 }
             }
@@ -135,6 +136,7 @@ public class TextProcessing {
         answer = answer.replace("rs", "");
         answer = answer.replace("rupee", "");
         answer = answer.replace("rupees", "");
+        //Log.v(TAG, "discountAmount: " + answer);
         return Integer.parseInt(answer);
     }
 
@@ -149,7 +151,7 @@ public class TextProcessing {
             if(s.contains("get") || s.contains("limited") || s.contains("period") || s.contains("extra") || s.contains("%") || s.contains("cash") || s.contains("till") || s.contains("rs"))
                 count += 1;
         }
-        if(count > 5)
+        if(count > 4)
             return true;
         else
             return false;
@@ -265,22 +267,30 @@ public class TextProcessing {
                 food++;
             else if(msg[i].contains("ride") || msg[i].contains("air") || msg[i].contains("travel") || msg[i].contains("trip") || msg[i].contains("uber") || msg[i].contains("ola") || msg[i].contains("fly"))
                 travel++;
-            else if(msg[i].contains("wardrobe") || msg[i].contains("jeans") || msg[i].contains("cloth") || msg[i].contains("shirt") || msg[i].contains("trouser") || msg[i].contains("suit") || msg[i].contains("store"))
+            else if(msg[i].contains("clothing") || msg[i].contains("wardrobe"))
+                cloth = cloth+2;
+            else if(msg[i].contains("jeans") || msg[i].contains("shirt") || msg[i].contains("trouser") || msg[i].contains("suit") || msg[i].contains("store") || msg[i].contains("merchandi"))
                 cloth++;
-            else if(msg[i].contains("accessor") || msg[i].contains("lens") || msg[i].contains("glasses") || msg[i].contains("merchandi") || msg[i].contains("store"))
+            else if(msg[i].contains("accessor"))
+                accessories = accessories+2;
+            else if(msg[i].contains("lens") || msg[i].contains("glasses") || msg[i].contains("merchandi") || msg[i].contains("store"))
                 accessories++;
             else if(msg[i].contains("entertainment") || msg[i].contains("ticket") || msg[i].contains("book") || msg[i].contains("movie") || msg[i].contains("show"))
                 entertainment++;
         }
-        if(food > 1)
+        int maxima = Math.max(food,Math.max(Math.max(travel,cloth),Math.max(accessories,entertainment)));
+
+        if(maxima < 2)
+            return "misc";
+        if(food == maxima)
             return "food";
-        if(travel > 1)
+        if(travel == maxima)
             return "travel";
-        if(cloth > 1)
+        if(cloth == maxima)
             return "clothing";
-        if(accessories > 1)
+        if(accessories == maxima)
             return "accessories";
-        if(entertainment > 1)
+        if(entertainment == maxima)
             return "movies";
         return "misc";
     }
@@ -321,7 +331,15 @@ public class TextProcessing {
     public static Promo parsePromo(String promoMsg, String[] vendors) {
         Promo promo = new Promo();
         String[] promoMsgParts = promoMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +");
-        promo.setCategory(getCategory(promoMsgParts));
+        String category, vendor;
+        category = getCategory(promoMsgParts);
+        vendor = getVendor(promoMsgParts, vendors);
+        if(!vendor.equals("Others") || !category.equals("misc") || isPromo(promoMsgParts)) {
+            promo.setCategory(category);
+            promo.setVendor(vendor);
+        } else {
+            return null;
+        }
         promo.setDiscountAmount(getDiscountAmount(promoMsgParts));
         promo.setDiscountPercentage(getDiscountPercent(promoMsgParts));
         promo.setCode(getCode(promoMsgParts,promoMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +")));
@@ -329,7 +347,6 @@ public class TextProcessing {
         promo.setMaxUses(getMaxUses(promoMsgParts));
         promo.setPromoMsg(promoMsg);
         promo.setScore(getScore(promoMsgParts,1,1,1,1));
-        promo.setVendor(getVendor(promoMsgParts, vendors));
         return promo;
     }
 }
