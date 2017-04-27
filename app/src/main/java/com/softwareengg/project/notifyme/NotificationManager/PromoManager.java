@@ -47,6 +47,7 @@ public class PromoManager extends IntentService{
         Promo promo = TextProcessing.parsePromo(promoMsg, getResources().getStringArray(R.array.vendors));
         SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_format));
         ContentValues values = new ContentValues();
+        //put values that need to be passed to the database
         values.put(PromoEntry.COLUMN_NAME_CATEGORY, promo.getCategory());
         values.put(PromoEntry.COLUMN_NAME_CODE, promo.getCode());
         values.put(PromoEntry.COLUMN_NAME_DISCOUNT_AMOUNT,promo.getDiscountAmount());
@@ -82,5 +83,4 @@ public class PromoManager extends IntentService{
             Thread.currentThread().interrupt();
         }
     }
-
 }
