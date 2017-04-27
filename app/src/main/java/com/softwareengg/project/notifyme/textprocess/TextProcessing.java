@@ -12,25 +12,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.lang.Math;
 
-/**
- * Created by shivanshu on 20/02/17.
- */
-
 public class TextProcessing {
-    //public String getCode(String[] msg, String[] org);
     private static final String TAG = "NotifyMe";
 
-
+    //Get the coupon code
     public static String getCode(String[] msg, String[] org){
-        for(int i=0;i<msg.length;i++)
-        {
-            if(msg[i].equals("code") || msg[i].equals("code:") || msg[i].equals("voucher:")  || msg[i].equals("cpn") || msg[i].equals("cpn:"))
-            {
+        for(int i=0;i<msg.length;i++) {
+            if(msg[i].equals("code") || msg[i].equals("code:") || msg[i].equals("voucher:")  || msg[i].equals("cpn") || msg[i].equals("cpn:")) {
                 return org[i+1];
             }
             if(msg[i].length() > 5){
-                if(msg[i].substring(0,5).equals("code:") || msg[i].substring(0,4).equals("cpn:"))
-                {
+                if(msg[i].substring(0,5).equals("code:") || msg[i].substring(0,4).equals("cpn:")) {
                     return org[i].substring(5);
                 }
             }
@@ -38,29 +30,26 @@ public class TextProcessing {
         return null;
     }
 
+    //Get the discount as percentage if present, otherwise return 0
     public static int getDiscountPercent(String[] msg){
-        for(int i=0;i<msg.length;i++)
-        {
+        for(int i=0;i<msg.length;i++) {
             int index = msg[i].indexOf("%");
-            if(index != -1)
-            {
+            if(index != -1) {
                 return Integer.parseInt(msg[i].substring(0,index));
             }
         }
         return 0;
     }
 
+    //Get the discount amount if present, otherwise return 0
     public static int getDiscountAmount(String[] msg){
         String answer = "0";
-        for(int i=0;i<msg.length;i++)
-        {
-            if(msg[i].equals("upto"))
-            {
+        for(int i=0;i<msg.length;i++) {
+            if(msg[i].equals("upto")) {
                 if(msg[i+1].contains("%"))
                     continue;
                 else{
-                    if(msg[i+1].equals("rs") || msg[i+1].equals("rupee") || msg[i+1].equals("rupee"))
-                    {
+                    if(msg[i+1].equals("rs") || msg[i+1].equals("rupee") || msg[i+1].equals("rupee")) {
                         if(msg[i+2].contains("%"))
                             continue;
                         else
@@ -70,23 +59,19 @@ public class TextProcessing {
                         answer = msg[i+1];
                 }
             }
-            if(msg[i].length() > 3)
-            {
-                if(msg[i].substring(msg[i].length()-3).equals("off"))
-                {
+            if(msg[i].length() > 3) {
+                if(msg[i].substring(msg[i].length()-3).equals("off")) {
                     if(msg[i].substring(0,msg[i].length()-3).contains("%"))
                         continue;
                     else
                         answer = msg[i].substring(0,msg[i].length()-3);
                 }
             }
-            if(msg[i].equals("off") || msg[i].equals("cashback") || msg[i].equals("cashback*"))
-            {
+            if(msg[i].equals("off") || msg[i].equals("cashback") || msg[i].equals("cashback*")) {
                 if(msg[i-1].contains("%"))
                     continue;
                 else{
-                    if(msg[i-1].equals("rs") || msg[i-1].equals("rupee") || msg[i-1].equals("rupee"))
-                    {
+                    if(msg[i-1].equals("rs") || msg[i-1].equals("rupee") || msg[i-1].equals("rupee")) {
                         if(msg[i-2].contains("%"))
                             continue;
                         else
@@ -97,15 +82,12 @@ public class TextProcessing {
                 }
             }
         }
-        for(int i=0;i<msg.length;i++)
-        {
-            if(msg[i].equals("flat"))
-            {
+        for(int i=0;i<msg.length;i++) {
+            if(msg[i].equals("flat")) {
                 if(msg[i+1].contains("%"))
                     continue;
                 else{
-                    if(msg[i+1].equals("rs") || msg[i+1].equals("rupee") || msg[i+1].equals("rupee"))
-                    {
+                    if(msg[i+1].equals("rs") || msg[i+1].equals("rupee") || msg[i+1].equals("rupee")) {
                         if(msg[i+2].contains("%"))
                             continue;
                         else
@@ -115,10 +97,8 @@ public class TextProcessing {
                         answer = msg[i+1];
                 }
             }
-            if(msg[i].length() >= 3)
-            {
-                if( msg[i].substring(msg[i].length()-3).equals("get"))
-                {
+            if(msg[i].length() >= 3) {
+                if( msg[i].substring(msg[i].length()-3).equals("get")) {
                     if(msg[i+1].contains("%"))
                         continue;
                     else{
@@ -136,14 +116,20 @@ public class TextProcessing {
         answer = answer.replace("rs", "");
         answer = answer.replace("rupee", "");
         answer = answer.replace("rupees", "");
-        //Log.v(TAG, "discountAmount: " + answer);
-        return Integer.parseInt(answer);
+        int ans;
+        try {
+            ans = Integer.parseInt(answer);
+        }
+        catch(Exception ex){
+            ans = 0;
+        }
+        return ans;
     }
 
+    //Check whether the message is a promo of not
     public static boolean isPromo(String[] msg){
         int count = 0;
-        for(String s : msg)
-        {
+        for(String s : msg) {
             if(s.contains("t&c") || s.contains("tnc") || s.contains("free") || s.contains("sale") || s.contains("discount") || s.contains("cashback"))
                 count += 3;
             if(s.contains("off") || s.contains("flat") || s.contains("buy") || s.contains("voucher") || s.contains("coupon") || s.contains("code") || s.contains("cpn") || s.contains("valid"))
@@ -157,25 +143,22 @@ public class TextProcessing {
             return false;
     }
 
+    //Get the expiry date of the promo
     public static Date getValidity(String[] msg){
         Date answer;
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        for(int i=msg.length-1;i>0;i--)
-        {
-            if(msg[i].contains("today") || msg[i].contains("midnight"))
-            {
+        for(int i=msg.length-1;i>0;i--) {
+            if(msg[i].contains("today") || msg[i].contains("midnight")) {
                 answer = new Date(Calendar.getInstance().getTime().getTime());
                 return answer;
             }
-            if(msg[i].contains("tomorrow"))
-            {
+            if(msg[i].contains("tomorrow")) {
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.DATE, 1);
                 answer = new Date(cal.getTime().getTime());
                 return answer;
             }
-            if(msg[i].equals("jan") || msg[i].equals("january") || msg[i].equals("feb") || msg[i].equals("february") || msg[i].equals("mar") || msg[i].equals("march") || msg[i].equals("apr") || msg[i].equals("april") || msg[i].equals("may") || msg[i].equals("jun") || msg[i].equals("june") || msg[i].equals("jul") || msg[i].equals("july") || msg[i].equals("aug") || msg[i].equals("august") || msg[i].equals("sep") || msg[i].equals("september") || msg[i].equals("oct") || msg[i].equals("october") || msg[i].equals("nov") || msg[i].equals("november") || msg[i].equals("dec") || msg[i].equals("december"))
-            {
+            if(msg[i].equals("jan") || msg[i].equals("january") || msg[i].equals("feb") || msg[i].equals("february") || msg[i].equals("mar") || msg[i].equals("march") || msg[i].equals("apr") || msg[i].equals("april") || msg[i].equals("may") || msg[i].equals("jun") || msg[i].equals("june") || msg[i].equals("jul") || msg[i].equals("july") || msg[i].equals("aug") || msg[i].equals("august") || msg[i].equals("sep") || msg[i].equals("september") || msg[i].equals("oct") || msg[i].equals("october") || msg[i].equals("nov") || msg[i].equals("november") || msg[i].equals("dec") || msg[i].equals("december")) {
                 String temp = "";
                 if(msg[i-1].length() > 2)
                     temp = temp + msg[i-1].substring(0, msg[i-1].length()-2)+"/";
@@ -210,7 +193,7 @@ public class TextProcessing {
                 Calendar cal = Calendar.getInstance();
                 java.util.Date utilDate;
                 try {
-                    utilDate = df.parse(temp); // your util date
+                    utilDate = df.parse(temp);
                     cal.setTime(utilDate);
                     cal.set(Calendar.HOUR_OF_DAY, 0);
                     cal.set(Calendar.MINUTE, 0);
@@ -226,21 +209,21 @@ public class TextProcessing {
         return null;
     }
 
+    //The maximum number of times the promo can be used
     public static int getMaxUses(String[] msg){
-        for(int i=0;i<msg.length;i++)
-        {
+        for(int i=0;i<msg.length;i++) {
             if(msg[i].equals("rides"))
                 return Integer.parseInt(msg[i-1]);
         }
         return 1;
     }
 
+    //Get x Buy y kind of offers
     public static int[] getFreebies(String[] msg){
         int answer[] = new int[2];
         boolean get = false;
         boolean buy = false;
-        for(int i=0;i<msg.length;i++)
-        {
+        for(int i=0;i<msg.length;i++) {
             if(msg[i].equals("get")){
                 if(msg[i+1].matches("[0-9]+")){
                     answer[1] = Integer.parseInt(msg[i+1]);
@@ -259,10 +242,10 @@ public class TextProcessing {
         return null;
     }
 
+    //Get the category(food, travel, etc.) to which the promo belongs
     public static String getCategory(String[] msg){
         int food=0,travel=0,cloth=0,accessories=0,entertainment=0;
-        for(int i=0;i<msg.length;i++)
-        {
+        for(int i=0;i<msg.length;i++) {
             if(msg[i].contains("pizza") || msg[i].contains("delicious") || msg[i].contains("dominos") || msg[i].contains("food") || msg[i].contains("medium") || msg[i].contains("large"))
                 food++;
             else if(msg[i].contains("ride") || msg[i].contains("air") || msg[i].contains("travel") || msg[i].contains("trip") || msg[i].contains("uber") || msg[i].contains("ola") || msg[i].contains("fly"))
@@ -295,6 +278,7 @@ public class TextProcessing {
         return "misc";
     }
 
+    //Give a score to the promo according to a score function
     public static int getScore(String[] msg,int wtDiscountP,int wtDiscountA,int wtUses, int wtValidity){
         int discountP = getDiscountPercent(msg);
         int discountA = getDiscountAmount(msg);
@@ -317,6 +301,7 @@ public class TextProcessing {
         return score;
     }
 
+    //Get the vendor(Dominos, Uber, etc.) of the promo
     public static String getVendor(String[] promoMsgParts, String[] vendors) {
         for(String part : promoMsgParts) {
             for(String vendor : vendors) {
@@ -328,6 +313,7 @@ public class TextProcessing {
         return "Others";
     }
 
+    //Parse the promo message to obtain all the relevant information about the promo
     public static Promo parsePromo(String promoMsg, String[] vendors) {
         Promo promo = new Promo();
         String[] promoMsgParts = promoMsg.replaceAll("[.,!\n]", " ").toLowerCase().split(" +");

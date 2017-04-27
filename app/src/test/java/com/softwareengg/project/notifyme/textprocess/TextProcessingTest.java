@@ -4,13 +4,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
-/**
- * Created by startup on 25-04-2017.
- */
+
 public class TextProcessingTest {
     public static String promo1 = "Dear Rider, POOL is at flat Rs49 in NCR only till tomorrow 9 Feb! Valid on trips within Gurgaon, Delhi, Noida-Ghaziabad & Faridabad, upto 8km. t.uber.com/49ncr";
     public static String promo2 = "Delicious foodpanda offer - 40% off on your first order. Use code NEWPANDA. Pay via wallets & 15% cash back too. Order Now: https://chk.bz/9k8pe69wzb";
@@ -56,6 +52,7 @@ public class TextProcessingTest {
     String[] org7 = str7.split(" +");
 
     @Test
+    //Checks the getCode() function
     public void getCode() throws Exception {
         String exp2 = "NEWPANDA";
         String result2 = TextProcessing.getCode(msg2,org2);
@@ -79,6 +76,7 @@ public class TextProcessingTest {
     }
 
     @Test
+    //Checks the getDiscountPercent() function
     public void getDiscountPercent() throws Exception {
         int exp2 = 40;
         int result2 = TextProcessing.getDiscountPercent(msg2);
@@ -94,6 +92,7 @@ public class TextProcessingTest {
     }
 
     @Test
+    //Checks the getDiscountAmount() function
     public void getDiscountAmount() throws Exception {
         int exp1 = 49;
         int result1 = TextProcessing.getDiscountAmount(msg1);
@@ -114,6 +113,7 @@ public class TextProcessingTest {
 
 
     @Test
+    //Checks the getValidity() function
     public void getValidity() throws Exception {
         try {
             System.out.println("getValidity");
@@ -141,7 +141,7 @@ public class TextProcessingTest {
             Date result3 = TextProcessing.getValidity(msg3);
             assertEquals(exp3, result3);
 
-            utilDate = df.parse("08-01-2017"); // your util date
+            utilDate = df.parse("08-01-2017");
             cal.setTime(utilDate);
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
@@ -151,14 +151,12 @@ public class TextProcessingTest {
             Date result5 = TextProcessing.getValidity(msg5);
             assertEquals(exp5, result5);
 
-
-            // TODO review the generated test code and remove the default call to fail.
-            //fail("The test case is a prototype.");
         } catch (ParseException ex) {
         }
     }
 
     @Test
+    //Checks the getMaxUses() function
     public void getMaxUses() throws Exception {
         int exp3 = 2;
         int result3 = TextProcessing.getMaxUses(msg3);
@@ -166,6 +164,7 @@ public class TextProcessingTest {
     }
 
     @Test
+    //Checks the isPromo() function
     public void isPromo() throws Exception{
         boolean exp1 = true;
         boolean result1 = TextProcessing.isPromo(msg1);
@@ -197,6 +196,7 @@ public class TextProcessingTest {
     }
 
     @Test
+    //Checks the getCategory() function
     public void getCategory() throws Exception {
         String exp1 = "travel";
         String result1 = TextProcessing.getCategory(msg1);
