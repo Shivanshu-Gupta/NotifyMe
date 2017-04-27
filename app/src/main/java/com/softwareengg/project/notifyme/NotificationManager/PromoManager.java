@@ -26,6 +26,8 @@ import java.util.Set;
 
 /**
  * Created by Deepanker Mishra on 04-04-2017.
+ * - listens to notifications and sms
+ * - stores promos in db
  */
 
 public class PromoManager extends IntentService implements SharedPreferences.OnSharedPreferenceChangeListener{
