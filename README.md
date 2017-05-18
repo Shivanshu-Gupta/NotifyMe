@@ -10,7 +10,7 @@ NotifyMe receives the offers on the user's behalf. It then employs text processi
 # Features
 1. NotifyMe will save the user form the barrage of notifications by hiding all the irrelevant notifications.
 2. While in-app, it will allow the user to:
-  1. View all the special offers, discount codes, cashbacks in a single glance.
-  2. Filter offers according to various characteristics such as category, discount, validity, or those from a particular application etc.
-  3. Hide notifications not relevant to the user.
+   1. View all the special offers, discount codes, cashbacks in a single glance.
+   2. Filter offers according to various characteristics such as category, discount, validity, or those from a particular application etc.
+   3. Hide notifications not relevant to the user.
 3. Additionally it will also directly notify the user about the most relevant offers.
