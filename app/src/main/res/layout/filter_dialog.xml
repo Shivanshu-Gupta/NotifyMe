@@ -51,7 +51,7 @@
 
         <TextView
             android:id="@+id/filter_receipt"
-            android:text="Date of Receipt Filter"
+            android:text="Receipt Date Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -65,7 +65,7 @@
 
         <TextView
             android:id="@+id/filter_expiry"
-            android:text="Date of Receipt Filter"
+            android:text="Expiry Date Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

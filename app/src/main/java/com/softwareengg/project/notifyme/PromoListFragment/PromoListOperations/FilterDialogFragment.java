@@ -158,7 +158,7 @@ public class FilterDialogFragment extends DialogFragment {
                                 Log.v(TAG, "Year: " + selectedYear);
                                 Log.v(TAG, "Month: " + selectedMonth);
                                 Log.v(TAG, "Day: " + selectedDay);
-                                mExpiry.set(selectedYear, selectedMonth + 1, selectedDay);
+                                mExpiry.set(selectedYear, selectedMonth, selectedDay);
                                 SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_format));
                                 mFilter.setExpiry(sdf.format(mExpiry.getTime()));
                                 mExpiryText.setText(sdf.format(mExpiry.getTime()));
